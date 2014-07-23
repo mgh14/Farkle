@@ -13,3 +13,8 @@ hs_err_pid*
 
 # any files outside of Farkle workspace
 ../*
+/bin
+
+# java classpath, eclipse project files
+*.project
+*.classpath
