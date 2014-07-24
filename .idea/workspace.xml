@@ -2,18 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c7e9127b-6055-4243-8ba1-378c9e6cfe15" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Farkle.iml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/mockito_all_1_9_5.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/testng_6_8_8.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MOVED" beforePath="$PROJECT_DIR$/src/DiceRoll.java" afterPath="$PROJECT_DIR$/src/Engine/DiceRoll.java" />
       <change type="MOVED" beforePath="$PROJECT_DIR$/src/Roll.java" afterPath="$PROJECT_DIR$/src/Engine/Roll.java" />
@@ -375,6 +363,15 @@
       <created>1406240384554</created>
       <updated>1406240384554</updated>
     </task>
+    <task id="LOCAL-00001" summary="Add .idea files to project">
+      <created>1406241753847</created>
+      <updated>1406241753847</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Add more project files to repo">
+      <created>1406241774155</created>
+      <updated>1406241774155</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -421,6 +418,9 @@
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
+    <MESSAGE value="Add .idea files to project" />
+    <MESSAGE value="Add more project files to repo" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add more project files to repo" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
