@@ -371,7 +371,11 @@
       <created>1406241774155</created>
       <updated>1406241774155</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Add workspace xml .idea file">
+      <created>1406241784763</created>
+      <updated>1406241784763</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -420,7 +424,8 @@
     </option>
     <MESSAGE value="Add .idea files to project" />
     <MESSAGE value="Add more project files to repo" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add more project files to repo" />
+    <MESSAGE value="Add workspace xml .idea file" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add workspace xml .idea file" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
