@@ -1,4 +1,7 @@
+package Engine;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,25 +15,20 @@ public class DiceRoll {
 	private final int DEFAULT_MAX_NUM_DICE = 6;
 	
 	DiceRoll() {
-		initializeDiceRole(new Roll[] {});
+		initializeDiceRole(new ArrayList<Roll>());
 	}
 	
 	DiceRoll(Roll[] diceRolls) {
 		verifyOnlyNDice(diceRolls);
 	}
 	
-	private void initializeDiceRole(int maxNumDice, Roll[] diceRolls) {
+	private void initializeDiceRole(int maxNumDice, List<Roll> diceRolls) {
 		MAX_NUM_DICE = maxNumDice;
-		
-		values = new ArrayList<Roll>();
-		for(Roll current : diceRolls) {
-			values.add(current);
-		}
-		
+		values = diceRolls;
 		diceKept = new LinkedList<Roll>();
 	}
 	
-	private void initializeDiceRole(Roll[] diceRolls) {
+	private void initializeDiceRole(List<Roll> diceRolls) {
 		initializeDiceRole(DEFAULT_MAX_NUM_DICE, diceRolls);
 	}
 	

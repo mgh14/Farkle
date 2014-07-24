@@ -1,13 +1,15 @@
+package Engine;
 
 public class Roll {
 	
 	private int value;
 	private int minValue;
 	private int maxValue;
-	
-	private final int ERROR_VALUE = -1;
-	private final int DEFAULT_MIN_VALUE = 1;
+
+    private final int DEFAULT_MIN_VALUE = 1;
 	private final int DEFAULT_MAX_VALUE = 6;
+
+    public final int ERROR_VALUE = -1;
 	
 	public Roll() {
 		assignClassVars(DEFAULT_MIN_VALUE, DEFAULT_MAX_VALUE, ERROR_VALUE);
