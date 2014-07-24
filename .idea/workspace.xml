@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c7e9127b-6055-4243-8ba1-378c9e6cfe15" name="Default" comment="Add roll test">
+    <list default="true" id="c7e9127b-6055-4243-8ba1-378c9e6cfe15" name="Default" comment="">
       <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/DiceRoll.java" afterPath="$PROJECT_DIR$/src/Engine/DiceRoll.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/Roll.java" afterPath="$PROJECT_DIR$/src/Engine/Roll.java" />
     </list>
     <ignored path="Farkle.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -382,7 +380,11 @@
       <created>1406241800650</created>
       <updated>1406241800650</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Add roll test">
+      <created>1406242044945</created>
+      <updated>1406242044945</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
