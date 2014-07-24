@@ -21,10 +21,10 @@ public class Roll {
 	
 	private void assignClassVars(int minVal, int maxVal, int rollVal) {
 		if(minVal > maxVal) {
-			throw new IllegalArgumentException("minimu is less than maximum");
+			throw new IllegalArgumentException("minimum value is less than maximum value");
 		}
 		if(minVal < 0) {
-			throw new IllegalArgumentException("minVal must be positive");
+			throw new IllegalArgumentException("minimum value must be positive");
 		}
 		
 		minValue = minVal;
