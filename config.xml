@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <settings>
     <setting>
-        <name>DEFAULT_NUM_PLAYERS</name>
-        <value>4</value>
-    </setting>
-
-    <setting>
         <name>NUM_PLAYERS</name>
-        <value>4</value>
-    </setting>
-
-    <setting>
-        <name>DEFAULT_NUM_DICE</name>
         <value>4</value>
     </setting>
 
@@ -21,28 +11,13 @@
     </setting>
 
     <setting>
-        <name>DEFAULT_MIN_DIE_VAL</name>
-        <value>1</value>
-    </setting>
-
-    <setting>
         <name>MIN_DIE_VAL</name>
         <value>1</value>
     </setting>
 
     <setting>
-        <name>DEFAULT_MAX_DIE_VAL</name>
-        <value>6</value>
-    </setting>
-
-    <setting>
         <name>MAX_DIE_VAL</name>
         <value>6</value>
-    </setting>
-
-    <setting>
-        <name>DEFAULT_REQ_POINTS_FOR_WIN</name>
-        <value>10000</value>
     </setting>
 
     <setting>
