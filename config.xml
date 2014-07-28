@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+    <setting>
+        <name>NUM_PLAYERS</name>
+        <value>4</value>
+    </setting>
+
+    <setting>
+        <name>MIN_DIE_VAL</name>
+        <value>1</value>
+    </setting>
+
+    <setting>
+        <name>MAX_DIE_VAL</name>
+        <value>6</value>
+    </setting>
+
+    <setting>
+        <name>NUM_DICE</name>
+        <value>6</value>
+    </setting>
+
+    <setting>
+        <name>REQ_POINTS_FOR_WIN</name>
+        <value>10000</value>
+    </setting>
+</settings>
