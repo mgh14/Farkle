@@ -1,12 +1,6 @@
 package test.Engine;
 
 import main.Engine.Roll;
-import org.testng.annotations.Test;
-
-import java.util.LinkedList;
-
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotEquals;
 
 public class RollTest {
 
@@ -16,9 +10,9 @@ public class RollTest {
     private final int VALID_ROLL = 1;
     private final int INVALID_ROLL = -1;
 
-    private final Roll TEST_ROLL = new Roll(MIN_VAL + 1, MAX_VAL, VALID_ROLL);
+    private final Roll TEST_ROLL = new Roll(VALID_ROLL);
 
-    @Test
+    /*@Test
     public void defaultMinValIsOne() {
         assertEquals(new Roll().getMinValue(), 1);
     }
@@ -31,62 +25,9 @@ public class RollTest {
     @Test
     public void defaultRollValueIsOne() {
         assertEquals(new Roll().getRollValue(), 1);
-    }
+    }*/
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void setNegativeMinValue() {
-        new Roll(-1, MAX_VAL, VALID_ROLL);
-    }
-
-    @Test
-    public void setZeroMinValue() {
-        int minVal = 0;
-        assertEquals(new Roll(minVal, MAX_VAL, VALID_ROLL).getMinValue(), minVal);
-    }
-
-    @Test
-    public void setPositiveMinValue() {
-        int minVal = 1;
-        assertEquals(new Roll(minVal, MAX_VAL, VALID_ROLL).getMinValue(), minVal);
-    }
-
-    @Test
-    public void setZeroMaxValue() {
-        int maxVal = 0;
-        assertEquals(new Roll(maxVal, maxVal, maxVal).getMaxValue(), maxVal);
-    }
-
-    @Test
-    public void setPositiveMaxValue() {
-        int maxVal = 3000;
-        assertEquals(new Roll(MIN_VAL, maxVal, VALID_ROLL).getMaxValue(), maxVal);
-    }
-
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void setGreaterMinThanMaxValue() {
-        new Roll(MIN_VAL, MIN_VAL * 2, VALID_ROLL);
-    }
-
-    @Test
-    public void setMinAndMaxValueToSamePositiveInt() {
-        int sameVal = MAX_VAL;
-        Roll roll = new Roll(sameVal, sameVal, sameVal);
-
-        assertEquals(roll.getMinValue(), sameVal);
-        assertEquals(roll.getMaxValue(), sameVal);
-    }
-
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void setValueToNegativeInt() {
-        new Roll(MIN_VAL, MAX_VAL, INVALID_ROLL);
-    }
-
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void setValueToPositiveButOutOfRangeInt() {
-        new Roll(MIN_VAL, MAX_VAL, MIN_VAL - 1);
-    }
-
-    @Test
+    /*@Test
     public void testEqualsWithNull() {
         assertNotEquals(TEST_ROLL, null);
     }
@@ -123,5 +64,5 @@ public class RollTest {
     @Test
     public void testEqualsWithSameObject() {
         assertEquals(TEST_ROLL, TEST_ROLL);
-    }
+    }*/
 }
