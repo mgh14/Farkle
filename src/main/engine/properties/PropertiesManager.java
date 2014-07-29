@@ -42,6 +42,8 @@ public class PropertiesManager {
     }
 
     private static void loadDefaults() {
+        defaults = new HashMap<String, Integer>();
+
         defaults.put(NUM_PLAYERS_PROP_NAME, DEFAULT_NUM_PLAYERS);
         defaults.put(MIN_DIE_VAL_PROP_NAME, DEFAULT_MIN_DIE_VALUE);
         defaults.put(MAX_DIE_VAL_PROP_NAME, DEFAULT_MAX_DIE_VALUE);

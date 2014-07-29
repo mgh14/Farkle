@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 
 public class DieValueEvaluatorTest {
 
-  private DieValueEvaluator evaluator;
+  private final DieValueEvaluator evaluator = new DieValueEvaluator();
 
   private final int MIN_VAL = 0;
   private final int MAX_VAL = 1000;
