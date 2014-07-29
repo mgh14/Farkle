@@ -7,34 +7,46 @@ import java.util.Random;
 
 public class RollGenerator {
 
-    private int minValue;
-    private int maxValue;
-    private int numDice;
+    private Random generator = new Random();
 
-    private Random generator;
+  public RollGenerator(Random random) {
+    setRandom(random);
+  }
 
-    public RollGenerator(int minVal, int maxVal, int numOfDice) {
-        minValue = minVal;
-        maxValue = maxVal;
-        numDice = numOfDice;
+  public RollGenerator() {
+    setRandom(null);
+  }
 
-        generator = new Random();
+  public void setRandom(Random random) {
+    generator = (generator != null) ? random : new Random();
+  }
+
+    public Roll getRoll(int minVal, int maxVal) {
+      verifyMinAndMaxValid(minVal, maxVal);
+      return new Roll(generator.nextInt((maxVal - minVal) + 1) + minVal);
     }
 
-    public Roll getRoll() {
-        return new Roll(generator.nextInt((maxValue - minValue) + 1) + minValue);
-    }
-
-    public Collection<Roll> getTurnRoll() {
-        return getTurnRoll(numDice);
-    }
-
-    public Collection<Roll> getTurnRoll(int numDice) {
+    public Collection<Roll> getTurnRoll(int minVal, int maxVal, int numDice) {
         List<Roll> rolls = new ArrayList<Roll>();
         for(int i=0; i<numDice; i++) {
-            rolls.add(getRoll());
+            rolls.add(getRoll(minVal, maxVal));
         }
 
         return rolls;
     }
+
+  public void verifyMinAndMaxValid(int min, int max) {
+    if(min > max) {
+      throw new IllegalArgumentException("minimum value is less than maximum value");
+    }
+    if(min < 0) {
+      throw new IllegalArgumentException("minimum value must be positive");
+    }
+  }
+
+  public void verifyDieValueIsValid(int min, int max, int value) {
+    if(!(min <= value && value <= max)) {
+      throw new IllegalArgumentException("Value is not within min/max value range");
+    }
+  }
 }

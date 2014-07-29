@@ -2,10 +2,12 @@ package main.engine.properties;
 
 import java.util.HashMap;
 
+import main.engine.RollGenerator;
+
 public class PropertiesManager {
 
     private static HashMap<String, String> properties = new HashMap<String, String>();
-    private static DieValueEvaluator dieEvaluator;
+    private static RollGenerator generator;
 
     private static final String CONFIG_FILENAME_PROP_NAME = "configFile";
     private static final String NUM_PLAYERS_PROP_NAME = "numPlayers";
@@ -25,8 +27,8 @@ public class PropertiesManager {
 
     public static final String DEFAULT_PROFILE_FILENAME = "config.xml";
 
-    public static void setDieEvaluator(DieValueEvaluator evaluator) {
-        dieEvaluator = evaluator;
+    public static void setGenerator(RollGenerator evaluator) {
+        generator = evaluator;
     }
 
     private static void resetPropertiesMap() {
@@ -128,7 +130,7 @@ public class PropertiesManager {
     }
 
     public static void verifyDieValueIsValid(int value) {
-        dieEvaluator.verifyDieValueIsValid(getMinDieValue(), getMaxDieValue(), value);
+        generator.verifyDieValueIsValid(getMinDieValue(), getMaxDieValue(), value);
     }
 
 }
