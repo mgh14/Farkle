@@ -19,8 +19,11 @@ public class PropertiesManager {
     public static final int DEFAULT_MAX_DIE_VALUE = 6;
     public static final int DEFAULT_NUM_DICE = 6;
     public static final int DEFAULT_REQ_POINTS_FOR_WIN = 10000;
+    public static final int DEFAULT_ERROR_INDICATOR = -1;
 
-    public static final String DEFAULT_CONFIG_FILENAME = "config.xml";
+    public static HashMap<String, Integer> defaults;
+
+    public static final String DEFAULT_PROFILE_FILENAME = "config.xml";
 
     public static void setDieEvaluator(DieValueEvaluator evaluator) {
         dieEvaluator = evaluator;
@@ -30,11 +33,32 @@ public class PropertiesManager {
         properties = new HashMap<String, String>();
     }
 
-    public static void loadDefaultConfig() {
-        //loadConfigFile(defaultFileName)
+    public static int getDefaultSetting(String propName) {
+        if(defaults.containsKey(propName)) {
+            return defaults.get(propName);
+        }
+
+        return DEFAULT_ERROR_INDICATOR;
     }
 
-    public static void loadConfigFile(String configFile) {
+    private static void loadDefaults() {
+        defaults.put(NUM_PLAYERS_PROP_NAME, DEFAULT_NUM_PLAYERS);
+        defaults.put(MIN_DIE_VAL_PROP_NAME, DEFAULT_MIN_DIE_VALUE);
+        defaults.put(MAX_DIE_VAL_PROP_NAME, DEFAULT_MAX_DIE_VALUE);
+        defaults.put(NUM_DICE_PROP_NAME, DEFAULT_NUM_DICE);
+        defaults.put(REQ_POINTS_FOR_WIN_PROP_NAME, DEFAULT_REQ_POINTS_FOR_WIN);
+    }
+
+    public static void loadDefaultConfig() {
+        loadDefaults();
+        properties.put(NUM_PLAYERS_PROP_NAME, Integer.toString(DEFAULT_NUM_PLAYERS));
+        properties.put(MIN_DIE_VAL_PROP_NAME, Integer.toString(DEFAULT_MIN_DIE_VALUE));
+        properties.put(MAX_DIE_VAL_PROP_NAME, Integer.toString(DEFAULT_MAX_DIE_VALUE));
+        properties.put(NUM_DICE_PROP_NAME, Integer.toString(DEFAULT_NUM_DICE));
+        properties.put(REQ_POINTS_FOR_WIN_PROP_NAME, Integer.toString(DEFAULT_REQ_POINTS_FOR_WIN));
+    }
+
+    public static void loadSettingsProfile(String configFile) {
         resetPropertiesMap();
 
         /*//Load and Parse the XML document
