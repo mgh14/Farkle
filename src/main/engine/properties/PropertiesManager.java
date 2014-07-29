@@ -4,37 +4,40 @@ import java.util.HashMap;
 
 public class PropertiesManager {
 
-    private static HashMap<String, String> properties = new HashMap<String, String>();
-    private static DieValueEvaluator dieEvaluator;
+    private HashMap<String, String> properties = new HashMap<String, String>();
+    private DieValueEvaluator dieEvaluator;
 
-    private static final String CONFIG_FILENAME_PROP_NAME = "configFile";
-    private static final String NUM_PLAYERS_PROP_NAME = "numPlayers";
-    private static final String MIN_DIE_VAL_PROP_NAME = "minVal";
-    private static final String MAX_DIE_VAL_PROP_NAME = "maxVal";
-    private static final String NUM_DICE_PROP_NAME = "numDice";
-    private static final String REQ_POINTS_FOR_WIN_PROP_NAME = "reqPointsForWin";
+    private final String CONFIG_FILENAME_PROP_NAME = "configFile";
+    private final String NUM_PLAYERS_PROP_NAME = "numPlayers";
+    private final String MIN_DIE_VAL_PROP_NAME = "minVal";
+    private final String MAX_DIE_VAL_PROP_NAME = "maxVal";
+    private final String NUM_DICE_PROP_NAME = "numDice";
+    private final String REQ_POINTS_FOR_WIN_PROP_NAME = "reqPointsForWin";
 
-    public static final int DEFAULT_NUM_PLAYERS = 2;
-    public static final int DEFAULT_MIN_DIE_VALUE = 1;
-    public static final int DEFAULT_MAX_DIE_VALUE = 6;
-    public static final int DEFAULT_NUM_DICE = 6;
-    public static final int DEFAULT_REQ_POINTS_FOR_WIN = 10000;
+    public final int DEFAULT_NUM_PLAYERS = 2;
+    public final int DEFAULT_MIN_DIE_VALUE = 1;
+    public final int DEFAULT_MAX_DIE_VALUE = 6;
+    public final int DEFAULT_NUM_DICE = 6;
+    public final int DEFAULT_REQ_POINTS_FOR_WIN = 10000;
 
-    public static final String DEFAULT_CONFIG_FILENAME = "config.xml";
+    public final String DEFAULT_CONFIG_FILENAME = "config.xml";
 
-    public static void setDieEvaluator(DieValueEvaluator evaluator) {
+    public void setDieEvaluator(DieValueEvaluator evaluator) {
         dieEvaluator = evaluator;
     }
 
-    private static void resetPropertiesMap() {
+    private void resetPropertiesMap() {
         properties = new HashMap<String, String>();
     }
 
-    public static void loadDefaultConfig() {
+    public void loadDefaultConfig() {
+        resetPropertiesMap();
+        properties.put(MIN_DIE_VAL_PROP_NAME, "here");
+        System.out.println("here");
         //loadConfigFile(defaultFileName)
     }
 
-    public static void loadConfigFile(String configFile) {
+    public void loadConfigFile(String configFile) {
         resetPropertiesMap();
 
         /*//Load and Parse the XML document
@@ -81,27 +84,27 @@ public class PropertiesManager {
         properties.put(CONFIG_FILENAME_PROP_NAME, configFile);
     }
 
-    public static int getNumPlayers() {
+    public int getNumPlayers() {
         return Integer.getInteger(properties.get(NUM_PLAYERS_PROP_NAME));
     }
 
-    public static int getMinDieValue() {
+    public int getMinDieValue() {
         return Integer.getInteger(properties.get(MIN_DIE_VAL_PROP_NAME));
     }
 
-    public static int getMaxDieValue() {
+    public int getMaxDieValue() {
         return Integer.getInteger(properties.get(MAX_DIE_VAL_PROP_NAME));
     }
 
-    public static int getNumDice() {
+    public int getNumDice() {
         return Integer.getInteger(properties.get(NUM_DICE_PROP_NAME));
     }
 
-    public static int getPointsReqForWin() {
+    public int getPointsReqForWin() {
         return Integer.getInteger(properties.get(REQ_POINTS_FOR_WIN_PROP_NAME));
     }
 
-    public static void verifyDieValueIsValid(int value) {
+    public void verifyDieValueIsValid(int value) {
         dieEvaluator.verifyDieValueIsValid(getMinDieValue(), getMaxDieValue(), value);
     }
 
