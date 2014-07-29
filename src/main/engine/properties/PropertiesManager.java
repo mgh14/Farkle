@@ -7,7 +7,7 @@ import main.engine.RollGenerator;
 public class PropertiesManager {
 
     private static HashMap<String, String> properties = new HashMap<String, String>();
-    private static RollGenerator generator;
+    private static RollGenerator generator = new RollGenerator();
 
     private static final String CONFIG_FILENAME_PROP_NAME = "configFile";
     private static final String NUM_PLAYERS_PROP_NAME = "numPlayers";
@@ -55,6 +55,7 @@ public class PropertiesManager {
 
     public static void loadDefaultConfig() {
         loadDefaults();
+
         properties.put(NUM_PLAYERS_PROP_NAME, Integer.toString(DEFAULT_NUM_PLAYERS));
         properties.put(MIN_DIE_VAL_PROP_NAME, Integer.toString(DEFAULT_MIN_DIE_VALUE));
         properties.put(MAX_DIE_VAL_PROP_NAME, Integer.toString(DEFAULT_MAX_DIE_VALUE));
