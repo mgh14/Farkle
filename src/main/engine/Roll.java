@@ -5,15 +5,13 @@ import main.engine.properties.PropertiesManager;
 public class Roll {
 	
 	private int value;
-
-    public static final int DEFAULT_ROLL_VALUE = PropertiesManager.DEFAULT_MAX_DIE_VALUE;
 	
 	public Roll() {
-		assignClassVars(DEFAULT_ROLL_VALUE);
+		setRollValue(PropertiesManager.DEFAULT_MAX_DIE_VALUE);
 	}
 	
 	public Roll(int ROLL_VALUE) {
-		assignClassVars(ROLL_VALUE);
+		setRollValue(ROLL_VALUE);
 	}
 	
 	public void setRollValue(int newVal) {
@@ -25,10 +23,6 @@ public class Roll {
 	public int getRollValue() {
 		return value;
 	}
-
-    private void assignClassVars(int rollVal) {
-        setRollValue(rollVal);
-    }
 
     @Override
     public boolean equals(Object other) {
