@@ -2,6 +2,8 @@ package test.engine.properties;
 
 import main.engine.properties.DieValueEvaluator;
 import main.engine.Roll;
+import main.engine.properties.PropertiesManager;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class DieValueEvaluatorTest {
@@ -12,7 +14,11 @@ public class DieValueEvaluatorTest {
   private final int MAX_VAL = 1000;
   private final int VALID_ROLL = 1;
   private final int INVALID_ROLL = -1;
-  private final Roll TEST_ROLL = new Roll(VALID_ROLL);
+
+  @BeforeMethod
+  public void setUp() {
+      PropertiesManager.loadDefaultConfig();
+  }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void verifyNegativeMinValueIsInvalid() {
