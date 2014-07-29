@@ -5,15 +5,6 @@ import org.testng.annotations.Test;
 
 public class RollGeneratorTest {
 
-  private RollGenerator generator;
-
-  @Test
-  public void test() {
-
-  }
-
-  public static class RollGeneratorTest {
-
     private final RollGenerator generator = new RollGenerator();
 
     private final int MIN_VAL = 0;
@@ -108,5 +99,4 @@ public class RollGeneratorTest {
           return rolls;
       }*/
 
-  }
 }
