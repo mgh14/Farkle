@@ -1,9 +1,8 @@
-package test.Engine;
+package test.engine;
 
-import main.Engine.DiceRoll;
-import main.Engine.Roll;
-import main.Engine.ScoreOption;
-import main.Engine.ScoresCalculator;
+import main.engine.DiceRoll;
+import main.engine.ScoreOption;
+import main.engine.ScoresCalculator;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;

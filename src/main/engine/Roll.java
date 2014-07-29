@@ -1,6 +1,6 @@
-package main.Engine;
+package main.engine;
 
-import main.Engine.Properties.PropertiesManager;
+import main.engine.properties.PropertiesManager;
 
 public class Roll {
 	

@@ -1,6 +1,6 @@
-package test.Engine;
+package test.engine;
 
-import main.Engine.Roll;
+import main.engine.Roll;
 
 public class RollTest {
 

@@ -1,7 +1,7 @@
-package test.Engine.Properties;
+package test.engine.properties;
 
-import main.Engine.Properties.DieValueEvaluator;
-import main.Engine.Roll;
+import main.engine.properties.DieValueEvaluator;
+import main.engine.Roll;
 import org.testng.annotations.Test;
 
 public class DieValueEvaluatorTest {
@@ -13,16 +13,6 @@ public class DieValueEvaluatorTest {
   private final int VALID_ROLL = 1;
   private final int INVALID_ROLL = -1;
   private final Roll TEST_ROLL = new Roll(VALID_ROLL);
-
-/*  @Test(expectedExceptions = IllegalArgumentException.class)
-  public void checkWhenMinIsGreaterThanMax() {
-    evaluator.verifyMinAndMaxValid(2, 1);
-  }
-
-  @Test(expectedExceptions = IllegalArgumentException.class)
-  public void checkMinIsNegative() {
-    evaluator.verifyMinAndMaxValid(-1, 2);
-  }*/
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void verifyNegativeMinValueIsInvalid() {
@@ -83,20 +73,5 @@ public class DieValueEvaluatorTest {
   public void verifyMaxValidRollIsValid() {
     evaluator.verifyDieValueIsValid(MIN_VAL, MAX_VAL, MAX_VAL);
   }
-
-  /*    public void verifyMinAndMaxValid(int min, int max) {
-        if(min > max) {
-            throw new IllegalArgumentException("minimum value is less than maximum value");
-        }
-        if(min < 0) {
-            throw new IllegalArgumentException("minimum value must be positive");
-        }
-    }
-
-    public void verifyDieValueIsValid(int min, int max, int value) {
-        if(!(min <= value && value <= max)) {
-            throw new IllegalArgumentException("Value is not within min/max value range");
-        }
-    }*/
 
 }

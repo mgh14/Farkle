@@ -1,10 +1,10 @@
-package main.Engine.Properties;
+package main.engine.properties;
 
 import java.util.HashMap;
 
 public class PropertiesManager {
 
-    private static HashMap<String, String> properties;
+    private static HashMap<String, String> properties = new HashMap<String, String>();
     private static DieValueEvaluator dieEvaluator;
 
     private static final String CONFIG_FILENAME_PROP_NAME = "configFile";
@@ -20,11 +20,23 @@ public class PropertiesManager {
     public static final int DEFAULT_NUM_DICE = 6;
     public static final int DEFAULT_REQ_POINTS_FOR_WIN = 10000;
 
+    public static final String DEFAULT_CONFIG_FILENAME = "config.xml";
+
     public static void setDieEvaluator(DieValueEvaluator evaluator) {
         dieEvaluator = evaluator;
     }
 
+    private static void resetPropertiesMap() {
+        properties = new HashMap<String, String>();
+    }
+
+    public static void loadDefaultConfig() {
+        //loadConfigFile(defaultFileName)
+    }
+
     public static void loadConfigFile(String configFile) {
+        resetPropertiesMap();
+
         /*//Load and Parse the XML document
 
         //document contains the complete XML as a Tree.
