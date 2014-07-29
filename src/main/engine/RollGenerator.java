@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class RollGenerator {
 
-    private Random generator = new Random();
+    private Random generator;
 
   public RollGenerator(Random random) {
     setRandom(random);
@@ -18,7 +18,7 @@ public class RollGenerator {
   }
 
   public void setRandom(Random random) {
-    generator = (generator != null) ? random : new Random();
+    generator = (random != null) ? random : new Random();
   }
 
     public Roll getRoll(int minVal, int maxVal) {
