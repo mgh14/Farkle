@@ -1,4 +1,4 @@
-package main.Engine.Properties;
+package main.engine.properties;
 
 public class DieValueEvaluator {
 

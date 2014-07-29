@@ -1,4 +1,4 @@
-package main.Engine;
+package main.engine;
 
 public class Player {
 
