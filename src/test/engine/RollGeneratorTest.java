@@ -1,9 +1,12 @@
 package test.engine;
 
+import main.engine.Roll;
 import main.engine.RollGenerator;
 import main.engine.properties.PropertiesManager;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertTrue;
 
 public class RollGeneratorTest {
 
@@ -11,7 +14,6 @@ public class RollGeneratorTest {
 
     private final int MIN_VAL = 0;
     private final int MAX_VAL = 1000;
-    private final int VALID_ROLL = 1;
     private final int INVALID_ROLL = MIN_VAL - 1;
 
   @BeforeMethod
@@ -84,12 +86,15 @@ public class RollGeneratorTest {
       generator.getRoll(1,0);
     }
 
-  /*@Test
+  @Test
   public void testGetRollWithValidBounds() {
-    Roll result = generator.getRoll(0, 6);
-    assertTrue(result.getRollValue() >= 0);
-    assertTrue(result.getRollValue() <= 6);
-  }*/
+    int minVal = PropertiesManager.DEFAULT_MIN_DIE_VALUE;
+    int maxVal = PropertiesManager.DEFAULT_MAX_DIE_VALUE;
+
+    Roll result = generator.getRoll(minVal, maxVal);
+    assertTrue(result.getRollValue() >= minVal);
+    assertTrue(result.getRollValue() <= maxVal);
+  }
     /*
 
 
