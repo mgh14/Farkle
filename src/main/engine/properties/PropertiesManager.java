@@ -6,9 +6,6 @@ import main.engine.RollGenerator;
 
 public class PropertiesManager {
 
-    private static HashMap<String, String> properties = new HashMap<String, String>();
-    private static RollGenerator generator = new RollGenerator();
-
     private static final String CONFIG_FILENAME_PROP_NAME = "configFile";
     private static final String NUM_PLAYERS_PROP_NAME = "numPlayers";
     private static final String MIN_DIE_VAL_PROP_NAME = "minVal";
@@ -22,6 +19,14 @@ public class PropertiesManager {
     public static final int DEFAULT_NUM_DICE = 6;
     public static final int DEFAULT_REQ_POINTS_FOR_WIN = 10000;
     public static final int DEFAULT_ERROR_INDICATOR = -1;
+
+  private static HashMap<String, String> properties;
+  static {
+    properties = new HashMap<String, String>();
+    loadDefaultConfig();
+  }
+
+  private static RollGenerator generator = new RollGenerator();
 
     public static HashMap<String, Integer> defaults;
 
@@ -40,7 +45,7 @@ public class PropertiesManager {
             return defaults.get(propName);
         }
 
-        return DEFAULT_ERROR_INDICATOR;
+        throw new IllegalArgumentException("Property name " + propName + " does not exist");
     }
 
     private static void loadDefaults() {
@@ -111,23 +116,23 @@ public class PropertiesManager {
     }
 
     public static int getNumPlayers() {
-        return Integer.getInteger(properties.get(NUM_PLAYERS_PROP_NAME));
+        return Integer.parseInt(properties.get(NUM_PLAYERS_PROP_NAME));
     }
 
     public static int getMinDieValue() {
-        return Integer.getInteger(properties.get(MIN_DIE_VAL_PROP_NAME));
+        return Integer.parseInt(properties.get(MIN_DIE_VAL_PROP_NAME));
     }
 
     public static int getMaxDieValue() {
-        return Integer.getInteger(properties.get(MAX_DIE_VAL_PROP_NAME));
+        return Integer.parseInt(properties.get(MAX_DIE_VAL_PROP_NAME));
     }
 
     public static int getNumDice() {
-        return Integer.getInteger(properties.get(NUM_DICE_PROP_NAME));
+      return Integer.parseInt(properties.get(NUM_DICE_PROP_NAME));
     }
 
     public static int getPointsReqForWin() {
-        return Integer.getInteger(properties.get(REQ_POINTS_FOR_WIN_PROP_NAME));
+        return Integer.parseInt(properties.get(REQ_POINTS_FOR_WIN_PROP_NAME));
     }
 
     public static void verifyDieValueIsValid(int value) {
