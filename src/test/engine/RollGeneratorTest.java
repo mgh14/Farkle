@@ -1,6 +1,8 @@
 package test.engine;
 
 import main.engine.RollGenerator;
+import main.engine.properties.PropertiesManager;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class RollGeneratorTest {
@@ -10,7 +12,12 @@ public class RollGeneratorTest {
     private final int MIN_VAL = 0;
     private final int MAX_VAL = 1000;
     private final int VALID_ROLL = 1;
-    private final int INVALID_ROLL = -1;
+    private final int INVALID_ROLL = MIN_VAL - 1;
+
+  @BeforeMethod
+  public void setUp() {
+    PropertiesManager.loadDefaultConfig();
+  }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void verifyNegativeMinValueIsInvalid() {
@@ -72,18 +79,19 @@ public class RollGeneratorTest {
       generator.verifyDieValueIsValid(MIN_VAL, MAX_VAL, MAX_VAL);
     }
 
-
-    /*  public RollGenerator(Random random) {
-      setRandom(random);
+    @Test(expectedExceptions = IllegalArgumentException.class)
+    public void testGetRollWithInvalidBounds() {
+      generator.getRoll(1,0);
     }
 
-    public RollGenerator() {
-      setRandom(null);
-    }
+  /*@Test
+  public void testGetRollWithValidBounds() {
+    Roll result = generator.getRoll(0, 6);
+    assertTrue(result.getRollValue() >= 0);
+    assertTrue(result.getRollValue() <= 6);
+  }*/
+    /*
 
-    public void setRandom(Random random) {
-      generator = (generator != null) ? random : new Random();
-    }
 
       public Roll getRoll(int minVal, int maxVal) {
         verifyMinAndMaxValid(minVal, maxVal);
