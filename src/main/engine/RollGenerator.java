@@ -35,6 +35,12 @@ public class RollGenerator {
         return rolls;
     }
 
+    public void verifyNumDiceIsValid(int numDice) {
+        if(numDice < 1) {
+            throw new IllegalArgumentException("minimum number of dice is one");
+        }
+    }
+
   public void verifyMinAndMaxValid(int min, int max) {
     if(min > max) {
       throw new IllegalArgumentException("minimum value is less than maximum value");
