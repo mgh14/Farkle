@@ -1,17 +1,32 @@
 package main.engine.properties;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import main.engine.RollGenerator;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
 public class PropertiesManager {
 
+    //--------------------------------------------------------------------------
+    // begin member variables
+
     private static final String CONFIG_FILENAME_PROP_NAME = "configFile";
-    private static final String NUM_PLAYERS_PROP_NAME = "numPlayers";
-    private static final String MIN_DIE_VAL_PROP_NAME = "minVal";
-    private static final String MAX_DIE_VAL_PROP_NAME = "maxVal";
-    private static final String NUM_DICE_PROP_NAME = "numDice";
-    private static final String REQ_POINTS_FOR_WIN_PROP_NAME = "reqPointsForWin";
+    private static final String NUM_PLAYERS_PROP_NAME = "NUM_PLAYERS";
+    private static final String MIN_DIE_VAL_PROP_NAME = "MIN_DIE_VAL";
+    private static final String MAX_DIE_VAL_PROP_NAME = "MAX_DIE_VAL";
+    private static final String NUM_DICE_PROP_NAME = "NUM_DICE";
+    private static final String REQ_POINTS_FOR_WIN_PROP_NAME = "REQ_POINTS_FOR_WIN";
 
     public static final int DEFAULT_NUM_PLAYERS = 2;
     public static final int DEFAULT_MIN_DIE_VALUE = 1;
@@ -20,47 +35,28 @@ public class PropertiesManager {
     public static final int DEFAULT_REQ_POINTS_FOR_WIN = 10000;
     public static final int DEFAULT_ERROR_INDICATOR = -1;
 
-  private static HashMap<String, String> properties;
-  static {
-    properties = new HashMap<String, String>();
-    loadDefaultConfig();
-  }
-
-  private static RollGenerator generator = new RollGenerator();
-
-    public static HashMap<String, Integer> defaults;
-
-    public static final String DEFAULT_PROFILE_FILENAME = "config.xml";
-
-    public static void setGenerator(RollGenerator evaluator) {
-        generator = evaluator;
-    }
-
-    private static void resetPropertiesMap() {
+    private static HashMap<String, String> properties;
+    static {
         properties = new HashMap<String, String>();
+        loadDefaultConfig();
+    }
+    private static RollGenerator generator = new RollGenerator();
+    private static XMLHelper xmlHelper = new XMLHelper();
+
+    public static final String FARKLE_ROOT_DIR = new File("").getAbsolutePath() + "/";
+
+    //-------------------------------------------------------------------------
+    // Begin public methods
+
+    public static void setGenerator(RollGenerator generator) {
+        PropertiesManager.generator = generator;
     }
 
-    public static int getDefaultSetting(String propName) {
-        if(defaults.containsKey(propName)) {
-            return defaults.get(propName);
-        }
-
-        throw new IllegalArgumentException("Property name " + propName + " does not exist");
-    }
-
-    private static void loadDefaults() {
-        defaults = new HashMap<String, Integer>();
-
-        defaults.put(NUM_PLAYERS_PROP_NAME, DEFAULT_NUM_PLAYERS);
-        defaults.put(MIN_DIE_VAL_PROP_NAME, DEFAULT_MIN_DIE_VALUE);
-        defaults.put(MAX_DIE_VAL_PROP_NAME, DEFAULT_MAX_DIE_VALUE);
-        defaults.put(NUM_DICE_PROP_NAME, DEFAULT_NUM_DICE);
-        defaults.put(REQ_POINTS_FOR_WIN_PROP_NAME, DEFAULT_REQ_POINTS_FOR_WIN);
+    public static void setXMLHelper(XMLHelper xmlHelper) {
+        PropertiesManager.xmlHelper = xmlHelper;
     }
 
     public static void loadDefaultConfig() {
-        loadDefaults();
-
         properties.put(NUM_PLAYERS_PROP_NAME, Integer.toString(DEFAULT_NUM_PLAYERS));
         properties.put(MIN_DIE_VAL_PROP_NAME, Integer.toString(DEFAULT_MIN_DIE_VALUE));
         properties.put(MAX_DIE_VAL_PROP_NAME, Integer.toString(DEFAULT_MAX_DIE_VALUE));
@@ -68,75 +64,71 @@ public class PropertiesManager {
         properties.put(REQ_POINTS_FOR_WIN_PROP_NAME, Integer.toString(DEFAULT_REQ_POINTS_FOR_WIN));
     }
 
-    public static void loadSettingsProfile(String configFile) {
+    public static String translateFilepathToAbsoluteFilepath(String filename) {
+        if(filename.contains(FARKLE_ROOT_DIR)) {
+            return filename;
+        }
+
+        return FARKLE_ROOT_DIR + filename;
+    }
+
+    public static boolean loadSettingsProfile(String configFile) {
+        Document document = xmlHelper.parseProfile(translateFilepathToAbsoluteFilepath(configFile));
+
+        // if doc is parsed, then reset properties map (but not until)
         resetPropertiesMap();
 
-        /*//Load and Parse the XML document
+        // iterate through xml doc
+        properties = xmlHelper.getSettingsFromDocument(document);
 
-        //document contains the complete XML as a Tree.
-        Document document = builder.parse(ClassLoader.getSystemResourceAsStream("xml/employee.xml"));
+        // verify min/max die values are valid
+        generator.verifyMinAndMaxValid(getProperty(MIN_DIE_VAL_PROP_NAME), getProperty(MAX_DIE_VAL_PROP_NAME));
 
-        List<Employee> empList = new ArrayList<>();
-        //Iterating through the nodes and extracting the data.
-        NodeList nodeList = document.getDocumentElement().getChildNodes();
-        for (int i = 0; i < nodeList.getLength(); i++) {
-            //We have encountered an <employee> tag.
-            Node node = nodeList.item(i);
-            if (node instanceof Element) {
-                Employee emp = new Employee();
-                emp.id = node.getAttributes().
-                getNamedItem("id").getNodeValue();
-
-                NodeList childNodes = node.getChildNodes();
-                for (int j = 0; j < childNodes.getLength(); j++) {
-                    Node cNode = childNodes.item(j);
-
-                    //Identifying the child tag of employee encountered.
-                    if (cNode instanceof Element) {
-                        String content = cNode.getLastChild().
-                        getTextContent().trim();
-                        switch (cNode.getNodeName()) {
-                            case "firstName":
-                                emp.firstName = content;
-                                break;
-                            case "lastName":
-                                emp.lastName = content;
-                                break;
-                            case "location":
-                                emp.location = content;
-                                break;
-                        }
-                    }
-                }
-                empList.add(emp);
-            }
-        }*/
+        // verify number of dice is valid
+        generator.verifyNumDiceIsValid(getProperty(NUM_DICE_PROP_NAME));
 
         properties.put(CONFIG_FILENAME_PROP_NAME, configFile);
+
+        return true;
+    }
+
+    public static int getProperty(String propertyName) {
+        if(!properties.containsKey(propertyName)) {
+            throw new IllegalArgumentException("Property name " + propertyName + " does not exist");
+        }
+
+        return Integer.parseInt(properties.get(propertyName));
     }
 
     public static int getNumPlayers() {
-        return Integer.parseInt(properties.get(NUM_PLAYERS_PROP_NAME));
+        return getProperty(NUM_PLAYERS_PROP_NAME);
     }
 
     public static int getMinDieValue() {
-        return Integer.parseInt(properties.get(MIN_DIE_VAL_PROP_NAME));
+        return getProperty(MIN_DIE_VAL_PROP_NAME);
     }
 
     public static int getMaxDieValue() {
-        return Integer.parseInt(properties.get(MAX_DIE_VAL_PROP_NAME));
+        return getProperty(MAX_DIE_VAL_PROP_NAME);
     }
 
     public static int getNumDice() {
-      return Integer.parseInt(properties.get(NUM_DICE_PROP_NAME));
+      return getProperty(NUM_DICE_PROP_NAME);
     }
 
     public static int getPointsReqForWin() {
-        return Integer.parseInt(properties.get(REQ_POINTS_FOR_WIN_PROP_NAME));
+      return getProperty(REQ_POINTS_FOR_WIN_PROP_NAME);
     }
 
     public static void verifyDieValueIsValid(int value) {
         generator.verifyDieValueIsValid(getMinDieValue(), getMaxDieValue(), value);
+    }
+
+    //-------------------------------------------------------------------------------
+    // Begin private methods
+
+    private static void resetPropertiesMap() {
+        properties = new HashMap<String, String>();
     }
 
 }
