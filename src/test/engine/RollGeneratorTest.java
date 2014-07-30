@@ -1,29 +1,39 @@
 package test.engine;
 
-import main.engine.Roll;
+import java.util.Random;
+
 import main.engine.RollGenerator;
 import main.engine.properties.PropertiesManager;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.testng.AssertJUnit.assertEquals;
 
 public class RollGeneratorTest {
 
-    private final RollGenerator generator = new RollGenerator();
+    @Mock
+    private Random random;
 
-    private final int MIN_VAL = 0;
-    private final int MAX_VAL = 1000;
+    @InjectMocks
+    private RollGenerator generator = new RollGenerator(random);
+
+    private final int MIN_VAL = 1;
+    private final int MAX_VAL = PropertiesManager.getMaxDieValue();
     private final int INVALID_ROLL = MIN_VAL - 1;
 
-  @BeforeMethod
-  public void setUp() {
-    PropertiesManager.loadDefaultConfig();
-  }
+    @BeforeMethod
+    public void setUp() {
+      MockitoAnnotations.initMocks(this);
+    }
 
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void verifyNegativeMinValueIsInvalid() {
-      generator.verifyMinAndMaxValid(INVALID_ROLL, MAX_VAL);
+      generator.verifyMinAndMaxValid(-1, MAX_VAL);
     }
 
     @Test
@@ -81,33 +91,56 @@ public class RollGeneratorTest {
       generator.verifyDieValueIsValid(MIN_VAL, MAX_VAL, MAX_VAL);
     }
 
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void testGetRollWithInvalidBounds() {
-      generator.getRoll(1,0);
-    }
+  @Test(expectedExceptions = IllegalArgumentException.class)
+  public void testGetRollWithInvalidMinAndMaxVals() {
+    generator.getRoll(MAX_VAL, MIN_VAL);
+  }
 
   @Test
-  public void testGetRollWithValidBounds() {
-    int minVal = PropertiesManager.DEFAULT_MIN_DIE_VALUE;
-    int maxVal = PropertiesManager.DEFAULT_MAX_DIE_VALUE;
+  public void testGetRollWithValidMinAndMax() {
+    when(random.nextInt(MAX_VAL)).thenReturn(MIN_VAL - 1);
 
-    Roll result = generator.getRoll(minVal, maxVal);
-    assertTrue(result.getRollValue() >= minVal);
-    assertTrue(result.getRollValue() <= maxVal);
+    assertEquals(MIN_VAL, generator.getRoll(MIN_VAL, MAX_VAL).getRollValue());
+    verify(random).nextInt(MAX_VAL);
   }
+
+  @Test(expectedExceptions = IllegalArgumentException.class)
+  public void verifyNegativeNumDiceIsInvalid() {
+    generator.verifyNumDiceIsValid(-1);
+  }
+
+  @Test(expectedExceptions = IllegalArgumentException.class)
+  public void verifyZeroDiceIsInvalid() {
+    generator.verifyNumDiceIsValid(0);
+  }
+
+  @Test
+  public void verifyOneOrMoreDiceIsValid() {
+    generator.verifyNumDiceIsValid(RollGenerator.MIN_NUM_DICE_REQUIRED);
+    // no exception indicates success
+  }
+
+  @Test
+  public void testTurnRollWithInvalidNumDice() {
+
+  }
+
+  @Test
+  public void testTurnRollWithInvalidMinAndMax() {
+
+  }
+
+  @Test
+  public void testTurnRollWithOneDieRoll() {
+
+  }
+
+  @Test
+  public void testTurnRollWithMultipleDiceRolls() {
+
+  }
+
     /*
-
-    public void verifyNumDiceIsValid(int numDice) {
-        if(numDice < 1) {
-            throw new IllegalArgumentException("minimum number of dice is one");
-        }
-    }
-
-
-      public Roll getRoll(int minVal, int maxVal) {
-        verifyMinAndMaxValid(minVal, maxVal);
-        return new Roll(generator.nextInt((maxVal - minVal) + 1) + minVal);
-      }
 
       public Collection<Roll> getTurnRoll(int minVal, int maxVal, int numDice) {
           List<Roll> rolls = new ArrayList<Roll>();

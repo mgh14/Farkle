@@ -7,6 +7,8 @@ import java.util.Random;
 
 public class RollGenerator {
 
+  public static int MIN_NUM_DICE_REQUIRED = 1;
+
     private Random generator;
 
   public RollGenerator(Random random) {
@@ -21,25 +23,27 @@ public class RollGenerator {
     generator = (random != null) ? random : new Random();
   }
 
-    public Roll getRoll(int minVal, int maxVal) {
-      verifyMinAndMaxValid(minVal, maxVal);
-      return new Roll(generator.nextInt((maxVal - minVal) + 1) + minVal);
+  public Roll getRoll(int minVal, int maxVal) {
+    verifyMinAndMaxValid(minVal, maxVal);
+    return new Roll(generator.nextInt((maxVal - minVal) + 1) + minVal);
+  }
+
+  public Collection<Roll> getTurnRoll(int minVal, int maxVal, int numDice) {
+    verifyNumDiceIsValid(numDice);
+
+    List<Roll> rolls = new ArrayList<Roll>();
+    for(int i=0; i<numDice; i++) {
+      rolls.add(getRoll(minVal, maxVal)); // min, max are verified here
     }
 
-    public Collection<Roll> getTurnRoll(int minVal, int maxVal, int numDice) {
-        List<Roll> rolls = new ArrayList<Roll>();
-        for(int i=0; i<numDice; i++) {
-            rolls.add(getRoll(minVal, maxVal));
-        }
+    return rolls;
+  }
 
-        return rolls;
-    }
-
-    public void verifyNumDiceIsValid(int numDice) {
-        if(numDice < 1) {
-            throw new IllegalArgumentException("minimum number of dice is one");
-        }
-    }
+  public void verifyNumDiceIsValid(int numDice) {
+      if(numDice < MIN_NUM_DICE_REQUIRED) {
+          throw new IllegalArgumentException("minimum number of dice is one");
+      }
+  }
 
   public void verifyMinAndMaxValid(int min, int max) {
     if(min > max) {
@@ -55,4 +59,5 @@ public class RollGenerator {
       throw new IllegalArgumentException("Value is not within min/max value range");
     }
   }
+
 }
