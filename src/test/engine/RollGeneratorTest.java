@@ -97,6 +97,12 @@ public class RollGeneratorTest {
   }
     /*
 
+    public void verifyNumDiceIsValid(int numDice) {
+        if(numDice < 1) {
+            throw new IllegalArgumentException("minimum number of dice is one");
+        }
+    }
+
 
       public Roll getRoll(int minVal, int maxVal) {
         verifyMinAndMaxValid(minVal, maxVal);
