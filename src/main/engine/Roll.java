@@ -30,8 +30,6 @@ public class Roll {
             return false;
         }
 
-        Roll otherRoll = (Roll) other;
-
-        return getRollValue() == otherRoll.getRollValue();
+        return getRollValue() == ((Roll) other).getRollValue();
     }
 }

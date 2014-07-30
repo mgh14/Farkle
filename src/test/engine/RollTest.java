@@ -12,13 +12,7 @@ import static org.testng.AssertJUnit.assertEquals;
 
 public class RollTest {
 
-    private final int MIN_VAL = 0;
-    private final int MAX_VAL = 1000;
-
-    private final int VALID_ROLL = 1;
-    private final int INVALID_ROLL = -1;
-
-   private final Roll TEST_ROLL = new Roll(VALID_ROLL);
+   private final Roll TEST_ROLL = new Roll();
 
   @BeforeMethod
   public void setUp() {
@@ -42,7 +36,7 @@ public class RollTest {
 
     @Test
     public void testEqualsWithDifferentRollVals() {
-        assertNotEquals(TEST_ROLL, new Roll(TEST_ROLL.getRollValue() + 1));
+        assertNotEquals(TEST_ROLL, new Roll(TEST_ROLL.getRollValue() - 1));
     }
 
     @Test
