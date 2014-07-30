@@ -5,6 +5,6 @@ import main.engine.properties.PropertiesManager;
 public class Farkle {
 
     public static void main(String[] args) {
-        PropertiesManager.loadDefaultConfig();
+        PropertiesManager.loadSettingsProfile("profiles/4playerProfile.xml");
     }
 }
