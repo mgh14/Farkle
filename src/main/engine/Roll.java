@@ -16,20 +16,19 @@ public class Roll {
 	
 	public void setRollValue(int newVal) {
 		PropertiesManager.verifyDieValueIsValid(newVal);
-
-        value = newVal;
+    value = newVal;
 	}
 	
 	public int getRollValue() {
 		return value;
 	}
 
-    @Override
-    public boolean equals(Object other) {
-        if(other == null || !(other instanceof Roll)) {
-            return false;
-        }
-
-        return getRollValue() == ((Roll) other).getRollValue();
+  @Override
+  public boolean equals(Object other) {
+    if(other == null || !(other instanceof Roll)) {
+      return false;
     }
+
+    return getRollValue() == ((Roll) other).getRollValue();
+  }
 }
