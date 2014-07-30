@@ -21,24 +21,23 @@ public class XMLHelper {
     public Document parseProfile(String configFile) {
         File fXmlFile = new File(PropertiesManager.translateFilepathToAbsoluteFilepath(configFile));
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder dBuilder = null;
+
+        DocumentBuilder docBuilder;
         try {
-            dBuilder = dbFactory.newDocumentBuilder();
+            docBuilder = dbFactory.newDocumentBuilder();
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
+            return null;
         }
 
         Document document = null;
         try {
-            document = dBuilder.parse(fXmlFile);
+            document = docBuilder.parse(fXmlFile);
         } catch (SAXException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        if(document == null)
-            throw new IllegalStateException("can't be here");
 
         return document;
     }

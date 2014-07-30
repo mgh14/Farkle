@@ -1,20 +1,10 @@
 package main.engine.properties;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.HashMap;
-
 import main.engine.RollGenerator;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.util.HashMap;
 
 public class PropertiesManager {
 
@@ -72,14 +62,21 @@ public class PropertiesManager {
         return FARKLE_ROOT_DIR + filename;
     }
 
-    public static boolean loadSettingsProfile(String configFile) {
+    public static boolean loadSettingsProfile(String configFile) throws RuntimeException {
+        String configFileError = "There was an error loading profile " + configFile;
         Document document = xmlHelper.parseProfile(translateFilepathToAbsoluteFilepath(configFile));
+        if(document == null) {
+            throw new RuntimeException(configFileError);
+        }
 
         // if doc is parsed, then reset properties map (but not until)
         resetPropertiesMap();
 
         // iterate through xml doc
         properties = xmlHelper.getSettingsFromDocument(document);
+        if(properties == null) {
+            throw new RuntimeException(configFileError);
+        }
 
         // verify min/max die values are valid
         generator.verifyMinAndMaxValid(getProperty(MIN_DIE_VAL_PROP_NAME), getProperty(MAX_DIE_VAL_PROP_NAME));
