@@ -18,28 +18,17 @@ public class XMLHelper {
     private final String VARIABLE_XML_NAME = "name";
     private final String VARIABLE_XML_VALUE = "value";
 
-    public Document parseProfile(String configFile) {
-        File fXmlFile = new File(PropertiesManager.translateFilepathToAbsoluteFilepath(configFile));
+    public void writeProfile(String profileName, HashMap<String, Object> variableMap) {
+
+    }
+
+    public Document parseProfile(String profileFile) throws ParserConfigurationException,
+    SAXException, IOException {
+
+        File fXmlFile = new File(PropertiesManager.translateFilepathToAbsoluteFilepath(profileFile));
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-
-        DocumentBuilder docBuilder;
-        try {
-            docBuilder = dbFactory.newDocumentBuilder();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        Document document = null;
-        try {
-            document = docBuilder.parse(fXmlFile);
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return document;
+        DocumentBuilder docBuilder = dbFactory.newDocumentBuilder();
+        return docBuilder.parse(fXmlFile);
     }
 
     public HashMap<String, String> getSettingsFromDocument(Document document) {
