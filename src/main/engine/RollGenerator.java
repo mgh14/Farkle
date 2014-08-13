@@ -23,15 +23,15 @@ public class RollGenerator {
     generator = (random != null) ? random : new Random();
   }
 
-  public Roll getRoll(int minVal, int maxVal) {
+  public DieValue getRoll(int minVal, int maxVal) {
     verifyMinAndMaxValid(minVal, maxVal);
-    return new Roll(generator.nextInt((maxVal - minVal) + 1) + minVal);
+    return new DieValue(generator.nextInt((maxVal - minVal) + 1) + minVal);
   }
 
-  public Collection<Roll> getTurnRoll(int minVal, int maxVal, int numDice) {
+  public Collection<DieValue> getTurnRoll(int minVal, int maxVal, int numDice) {
     verifyNumDiceIsValid(numDice);
 
-    List<Roll> rolls = new ArrayList<Roll>();
+    List<DieValue> rolls = new ArrayList<DieValue>();
     for(int i=0; i<numDice; i++) {
       rolls.add(getRoll(minVal, maxVal)); // min, max are verified here
     }
