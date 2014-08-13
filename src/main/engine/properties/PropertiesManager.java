@@ -63,7 +63,7 @@ public class PropertiesManager {
     }
 
     public static boolean loadSettingsProfile(String configFile) throws RuntimeException {
-        String configFileError = "There was an error loading profile " + configFile;
+        /*String configFileError = "There was an error loading profile " + configFile;
         Document document = xmlHelper.parseProfile(translateFilepathToAbsoluteFilepath(configFile));
         if(document == null) {
             throw new RuntimeException(configFileError);
@@ -84,7 +84,7 @@ public class PropertiesManager {
         // verify number of dice is valid
         generator.verifyNumDiceIsValid(getProperty(NUM_DICE_PROP_NAME));
 
-        properties.put(CONFIG_FILENAME_PROP_NAME, configFile);
+        properties.put(CONFIG_FILENAME_PROP_NAME, configFile);*/
 
         return true;
     }
