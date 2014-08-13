@@ -2,7 +2,7 @@ package test.engine;
 
 import java.util.LinkedList;
 
-import main.engine.Roll;
+import main.engine.DieValue;
 import main.engine.properties.PropertiesManager;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -10,9 +10,9 @@ import org.testng.annotations.Test;
 import static org.testng.Assert.assertNotEquals;
 import static org.testng.AssertJUnit.assertEquals;
 
-public class RollTest {
+public class DieValueTest {
 
-   private final Roll TEST_ROLL = new Roll();
+   private final DieValue TEST_ROLL = new DieValue();
 
   @BeforeMethod
   public void setUp() {
@@ -21,7 +21,7 @@ public class RollTest {
 
   @Test
   public void defaultRollValueIsSix() {
-    assertEquals(new Roll().getRollValue(), PropertiesManager.DEFAULT_MAX_DIE_VALUE);
+    assertEquals(new DieValue().getDieValue(), PropertiesManager.DEFAULT_MAX_DIE_VALUE);
   }
 
     @Test
@@ -31,17 +31,17 @@ public class RollTest {
 
     @Test
     public void testEqualsWithDifferentObjectType() {
-        assertNotEquals(TEST_ROLL, new LinkedList<Roll>());
+        assertNotEquals(TEST_ROLL, new LinkedList<DieValue>());
     }
 
     @Test
     public void testEqualsWithDifferentRollVals() {
-        assertNotEquals(TEST_ROLL, new Roll(TEST_ROLL.getRollValue() - 1));
+        assertNotEquals(TEST_ROLL, new DieValue(TEST_ROLL.getDieValue() - 1));
     }
 
     @Test
     public void testEqualsWithSameRolls() {
-        assertEquals(TEST_ROLL, new Roll(TEST_ROLL.getRollValue()));
+        assertEquals(TEST_ROLL, new DieValue(TEST_ROLL.getDieValue()));
     }
 
     @Test
