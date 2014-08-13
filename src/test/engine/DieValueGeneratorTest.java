@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.AssertJUnit.assertEquals;
 
-public class RollGeneratorTest {
+public class DieValueGeneratorTest {
 
     @Mock
     private Random random;
@@ -100,7 +100,7 @@ public class RollGeneratorTest {
   public void testGetRollWithValidMinAndMax() {
     when(random.nextInt(MAX_VAL)).thenReturn(MIN_VAL - 1);
 
-    assertEquals(MIN_VAL, generator.getRoll(MIN_VAL, MAX_VAL).getRollValue());
+    assertEquals(MIN_VAL, generator.getRoll(MIN_VAL, MAX_VAL).getDieValue());
     verify(random).nextInt(MAX_VAL);
   }
 
