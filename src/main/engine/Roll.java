@@ -1,63 +1,52 @@
 package main.engine;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
+import main.engine.properties.PropertiesManager;
+
+import java.util.*;
 
 public class Roll {
   
-	private Collection<DieValue> diceVals;
+	private List<DieValue> diceVals;
 	private int MAX_NUM_DICE;
 	
-	private final int DEFAULT_MAX_NUM_DICE = 6;
-	
-	Roll() {
+	public Roll() {
 		initializeDiceRoll(new ArrayList<DieValue>());
 	}
 	
-	Roll(DieValue[] diceRolls) {
-		verifyOnlyNDice(diceRolls);
+	public Roll(int numDice, List<DieValue> diceVals) {
+		initializeDiceRole(numDice, diceVals);
 	}
 
-    private void setNumDice(int numDice) {
-        if(numDice < 1) {
-            throw new IllegalArgumentException("Number of dice must be at least one");
-        }
-
-        MAX_NUM_DICE = numDice;
+  private void setNumDice(int numDice) {
+    if(numDice < PropertiesManager.DEFAULT_MIN_NUM_DICE) {
+        throw new IllegalArgumentException("Number of dice must be at least one");
     }
 
-    public Collection<DieValue> getDiceVals() {
-        List<DieValue> valsCopy = new LinkedList<DieValue>();
-        valsCopy.addAll(diceVals);
+    MAX_NUM_DICE = numDice;
+  }
 
-        return valsCopy;
-    }
+  public List<DieValue> getDiceVals() {
+      List<DieValue> valsCopy = new LinkedList<DieValue>();
+      valsCopy.addAll(diceVals);
 
-	private void initializeDiceRole(int maxNumDice, Collection<DieValue> diceValues) {
+      return valsCopy;
+  }
+
+	private void initializeDiceRole(int maxNumDice, List<DieValue> diceValues) {
 		setNumDice(maxNumDice);
 
-        diceVals = (diceValues != null) ? diceValues : new ArrayList<DieValue>();
-		diceKept = new LinkedList<DieValue>();
+    diceVals = (diceValues != null) ? diceValues : new ArrayList<DieValue>();
+    verifyOnlyNDice(diceVals);
 	}
 	
-	private void initializeDiceRoll(Collection<DieValue> diceRolls) {
-		initializeDiceRole(DEFAULT_MAX_NUM_DICE, diceRolls);
+	private void initializeDiceRoll(List<DieValue> diceRolls) {
+		initializeDiceRole(PropertiesManager.DEFAULT_NUM_DICE, diceRolls);
 	}
 	
-	private void verifyOnlyNDice(DieValue[] rolls) {
-		if(rolls.length > MAX_NUM_DICE) {
+	private void verifyOnlyNDice(List<DieValue> rolls) {
+		if(rolls.size() > MAX_NUM_DICE) {
 			throw new IllegalArgumentException("Only max of " + MAX_NUM_DICE + " allowed");
 		}
 	}
-
-    public Collection<DiceScore> calculatePossibleScoresFromRoll() {
-        return calculatePossibleScoresFromRoll(diceVals);
-    }
-
-    public Collection<DiceScore> calculatePossibleScoresFromRoll(Collection<DieValue> rollVals) {
-        return null;
-    }
 
 }
