@@ -3,10 +3,10 @@ package main.engine;
 public class Turn {
 
     final private Roll roll;
-    final private DiceScore score;
+    final private RollScore score;
     final private Player player;
 
-    public Turn(Roll playerRoll, DiceScore playerScore, Player playerWhoTookTurn) {
+    public Turn(Roll playerRoll, RollScore playerScore, Player playerWhoTookTurn) {
         roll = playerRoll;
         score = playerScore;
         player = playerWhoTookTurn;
@@ -16,7 +16,7 @@ public class Turn {
         return roll;
     }
 
-    public DiceScore getDiceScore() {
+    public RollScore getDiceScore() {
         return score;
     }
 
