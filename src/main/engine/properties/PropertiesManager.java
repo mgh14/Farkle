@@ -1,7 +1,6 @@
 package main.engine.properties;
 
-import main.engine.RollGenerator;
-import org.w3c.dom.Document;
+import main.engine.DieValueGenerator;
 
 import java.io.File;
 import java.util.HashMap;
@@ -15,12 +14,14 @@ public class PropertiesManager {
     private static final String NUM_PLAYERS_PROP_NAME = "NUM_PLAYERS";
     private static final String MIN_DIE_VAL_PROP_NAME = "MIN_DIE_VAL";
     private static final String MAX_DIE_VAL_PROP_NAME = "MAX_DIE_VAL";
+    private static final String MIN_NUM_DICE_VAL_PROP_NAME = "MIN_NUM_DICE";
     private static final String NUM_DICE_PROP_NAME = "NUM_DICE";
     private static final String REQ_POINTS_FOR_WIN_PROP_NAME = "REQ_POINTS_FOR_WIN";
 
     public static final int DEFAULT_NUM_PLAYERS = 2;
     public static final int DEFAULT_MIN_DIE_VALUE = 1;
     public static final int DEFAULT_MAX_DIE_VALUE = 6;
+    public static final int DEFAULT_MIN_NUM_DICE = 1;
     public static final int DEFAULT_NUM_DICE = 6;
     public static final int DEFAULT_REQ_POINTS_FOR_WIN = 10000;
     public static final int DEFAULT_ERROR_INDICATOR = -1;
@@ -30,7 +31,7 @@ public class PropertiesManager {
         properties = new HashMap<String, String>();
         loadDefaultConfig();
     }
-    private static RollGenerator generator = new RollGenerator();
+    private static DieValueGenerator generator = new DieValueGenerator();
     private static XMLHelper xmlHelper = new XMLHelper();
 
     public static final String FARKLE_ROOT_DIR = new File("").getAbsolutePath() + "/";
@@ -38,7 +39,7 @@ public class PropertiesManager {
     //-------------------------------------------------------------------------
     // Begin public methods
 
-    public static void setGenerator(RollGenerator generator) {
+    public static void setGenerator(DieValueGenerator generator) {
         PropertiesManager.generator = generator;
     }
 
@@ -50,6 +51,7 @@ public class PropertiesManager {
         properties.put(NUM_PLAYERS_PROP_NAME, Integer.toString(DEFAULT_NUM_PLAYERS));
         properties.put(MIN_DIE_VAL_PROP_NAME, Integer.toString(DEFAULT_MIN_DIE_VALUE));
         properties.put(MAX_DIE_VAL_PROP_NAME, Integer.toString(DEFAULT_MAX_DIE_VALUE));
+        properties.put(MIN_NUM_DICE_VAL_PROP_NAME, Integer.toString(DEFAULT_MIN_NUM_DICE));
         properties.put(NUM_DICE_PROP_NAME, Integer.toString(DEFAULT_NUM_DICE));
         properties.put(REQ_POINTS_FOR_WIN_PROP_NAME, Integer.toString(DEFAULT_REQ_POINTS_FOR_WIN));
     }
