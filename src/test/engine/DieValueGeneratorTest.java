@@ -1,8 +1,10 @@
 package test.engine;
 
+import java.util.List;
 import java.util.Random;
 
-import main.engine.RollGenerator;
+import main.engine.DieValue;
+import main.engine.DieValueGenerator;
 import main.engine.properties.PropertiesManager;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -10,6 +12,8 @@ import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.AssertJUnit.assertEquals;
@@ -20,10 +24,11 @@ public class DieValueGeneratorTest {
     private Random random;
 
     @InjectMocks
-    private RollGenerator generator = new RollGenerator(random);
+    private DieValueGenerator generator = new DieValueGenerator(random);
 
     private final int MIN_VAL = 1;
     private final int MAX_VAL = PropertiesManager.getMaxDieValue();
+    private final int MIN_DICE_REQ = DieValueGenerator.MIN_NUM_DICE_REQUIRED;
     private final int INVALID_ROLL = MIN_VAL - 1;
 
     @BeforeMethod
@@ -116,39 +121,43 @@ public class DieValueGeneratorTest {
 
   @Test
   public void verifyOneOrMoreDiceIsValid() {
-    generator.verifyNumDiceIsValid(RollGenerator.MIN_NUM_DICE_REQUIRED);
+    generator.verifyNumDiceIsValid(MIN_DICE_REQ);
     // no exception indicates success
   }
 
-  @Test
+  @Test(expectedExceptions = IllegalArgumentException.class)
   public void testTurnRollWithInvalidNumDice() {
-
+    generator.getTurnRoll(MIN_VAL, MAX_VAL, MIN_DICE_REQ - 1);
   }
 
-  @Test
+  @Test(expectedExceptions = IllegalArgumentException.class)
   public void testTurnRollWithInvalidMinAndMax() {
-
+    generator.getTurnRoll(MAX_VAL, MIN_VAL, MIN_DICE_REQ);
   }
 
   @Test
   public void testTurnRollWithOneDieRoll() {
+    int result = MAX_VAL - 1;
+    when(random.nextInt(anyInt())).thenReturn(result);
 
+    List<DieValue> dieVals = generator.getTurnRoll(MIN_VAL, MAX_VAL, MIN_DICE_REQ);
+    assertEquals(MIN_DICE_REQ, dieVals.size());
+    assertEquals(result + 1, dieVals.get(0).getDieValue());
+    verify(random).nextInt(anyInt());
   }
 
   @Test
   public void testTurnRollWithMultipleDiceRolls() {
+    int result = MAX_VAL - 1;
+    when(random.nextInt(anyInt())).thenReturn(result);
 
+    List<DieValue> dieVals = generator.getTurnRoll(MIN_VAL, MAX_VAL, MIN_DICE_REQ + 1);
+    assertEquals(MIN_DICE_REQ + 1, dieVals.size());
+    for(int i=0; i<MIN_DICE_REQ + 1; i++) {
+      assertEquals(result + 1, dieVals.get(i).getDieValue());
+    }
+
+    verify(random, times(MIN_DICE_REQ + 1)).nextInt(anyInt());
   }
-
-    /*
-
-      public Collection<Roll> getTurnRoll(int minVal, int maxVal, int numDice) {
-          List<Roll> rolls = new ArrayList<Roll>();
-          for(int i=0; i<numDice; i++) {
-              rolls.add(getRoll(minVal, maxVal));
-          }
-
-          return rolls;
-      }*/
 
 }

@@ -1,21 +1,20 @@
 package main.engine;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-public class RollGenerator {
+public class DieValueGenerator {
 
   public static int MIN_NUM_DICE_REQUIRED = 1;
 
     private Random generator;
 
-  public RollGenerator(Random random) {
+  public DieValueGenerator(Random random) {
     setRandom(random);
   }
 
-  public RollGenerator() {
+  public DieValueGenerator() {
     setRandom(null);
   }
 
@@ -28,7 +27,7 @@ public class RollGenerator {
     return new DieValue(generator.nextInt((maxVal - minVal) + 1) + minVal);
   }
 
-  public Collection<DieValue> getTurnRoll(int minVal, int maxVal, int numDice) {
+  public List<DieValue> getTurnRoll(int minVal, int maxVal, int numDice) {
     verifyNumDiceIsValid(numDice);
 
     List<DieValue> rolls = new ArrayList<DieValue>();
