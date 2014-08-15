@@ -114,7 +114,7 @@ public class ScoreCalculatorTest {
 
   @Test
   public void checkThreeThrees() {
-    testDiceRoll(new int[]{1, 1, 1, 3, 4, 6}, ScoreCalculator.FACTOR_POINTS_FOR_THREE_OF_SAME * 3);
+    testDiceRoll(new int[]{3, 2, 2, 3, 3, 6}, ScoreCalculator.FACTOR_POINTS_FOR_THREE_OF_SAME * 3);
   }
 
   @Test
@@ -208,8 +208,8 @@ public class ScoreCalculatorTest {
   }
 
   @Test
-  public void checkFourOfAKindPlusAPairNotOnes() {
-    testDiceRoll(new int[]{4, 4, 4, 4, 5, 5}, ScoreCalculator.NUM_POINTS_FOR_ONE_SET_OF_FOUR_AND_ONE_SET_OF_TWO);
+  public void checkFourOfAKindPlusAPairNotOfOnesOrFives() {
+    testDiceRoll(new int[]{4, 4, 4, 4, 6, 6}, ScoreCalculator.NUM_POINTS_FOR_ONE_SET_OF_FOUR_AND_ONE_SET_OF_TWO);
   }
 
   @Test
@@ -220,6 +220,11 @@ public class ScoreCalculatorTest {
   @Test
   public void checkTwoSetsOfThree() {
     testDiceRoll(new int[]{4, 4, 4, 6, 6, 6}, ScoreCalculator.NUM_POINTS_FOR_TWO_SETS_OF_THREE);
+  }
+
+  @Test
+  public void checkTwoSetsOfThreeWithFives() {
+    testDiceRoll(new int[]{4, 4, 4, 5, 5, 5}, ScoreCalculator.NUM_POINTS_FOR_TWO_SETS_OF_THREE);
   }
 
   private void testDiceRoll(int[] dieValsArray, int expectedPoints) {
