@@ -43,21 +43,11 @@ public class ScoreCalculator {
   public int calculateRollScore(Roll roll) {
     final HashMap<Integer, Integer> counts = assignDieValueCounts(roll);
 
-    // n number of dice of same numeric value (e.g. two 5's or 4 6's)
     int highestScore = 0;
-    int oneAndFivesScore = 0;
-    for (Integer key : counts.keySet()) {
-      int oneSetOfNScore = getCorrespondingScore(key, counts.get(key));
-      if(key == 1 || key == 5) {
-        oneAndFivesScore += oneSetOfNScore;
-      }
 
-      if(oneSetOfNScore > highestScore) {
-        highestScore = oneSetOfNScore;
-      }
-      if(oneAndFivesScore > highestScore) {
-        highestScore = oneAndFivesScore;
-      }
+    // n number of dice of same numeric value (e.g. two 5's or 4 6's)
+    for (Integer key : counts.keySet()) {
+      highestScore += scoreDiceOfSameValue(key, counts.get(key));
     }
 
     // straight (1 - 6)
@@ -101,59 +91,64 @@ public class ScoreCalculator {
       return counts;
   }
 
-  private int getCorrespondingScore(int keyVal, int numDice) {
+  private int scoreDiceOfSameValue(int keyVal, int numDice) {
+    // for ones
     if(keyVal == PropertiesManager.getMinDieValue() && numDice <= 3) {
       return NUM_POINTS_FOR_ONE * numDice;
     }
+
+    // for fives
     else if(keyVal == PropertiesManager.getMaxDieValue() - 1 && numDice <= 2) {
       return NUM_POINTS_FOR_FIVE * numDice;
     }
+
+    // for any dice number
     else if(numDice == 3) {
       return FACTOR_POINTS_FOR_THREE_OF_SAME * keyVal;
     }
-    else {
+
+    // for any dice number
+    else if(numDice > 3) {
       return FACTOR_POINTS_FOR_FOUR_OR_MORE_OF_SAME * (numDice - (PropertiesManager.getMaxDieValue() / 2));
     }
+
+    return 0;
   }
 
   private int scoreStraightRun(HashMap<Integer, Integer> counts) {
-    return scoreNSetsOfNDice(counts, 6, 1, NUM_POINTS_FOR_STRAIGHT);
+    int diceInEachSet = 1;
+    return scoreNSetsOfNDice(counts, PropertiesManager.getNumDice(), diceInEachSet, NUM_POINTS_FOR_STRAIGHT);
   }
 
   private int scoreThreeSetsOfTwo(HashMap<Integer, Integer> counts) {
-    return scoreNSetsOfNDice(counts, 3, 2, NUM_POINTS_FOR_THREE_SETS_OF_TWO);
+    int diceInEachSet = 2;
+    return scoreNSetsOfNDice(counts, PropertiesManager.getNumDice() / diceInEachSet, diceInEachSet, NUM_POINTS_FOR_THREE_SETS_OF_TWO);
   }
 
   private int scoreASetOfFourAndASetOfTwo(HashMap<Integer, Integer> counts) {
-    int keyForCountOfFourDice = -1;
+    boolean keyForFourFound = false;
+    boolean keyForTwoFound = false;
     for(Integer key : counts.keySet()) {
       int countForCurrentKey = counts.get(key);
       if(countForCurrentKey == 4) {
-        keyForCountOfFourDice = countForCurrentKey;
+        keyForFourFound = true;
       }
-    }
-
-    // no set with exactly four dice
-    if(keyForCountOfFourDice == -1) {
-      return 0;
-    }
-
-    for(Integer key : counts.keySet()) {
-      if(key == keyForCountOfFourDice) {
-        continue;   // don't count the same key twice
-      }
-
-      int countForCurrentKey = counts.get(key);
       if(countForCurrentKey == 2) {
-        return NUM_POINTS_FOR_ONE_SET_OF_FOUR_AND_ONE_SET_OF_TWO;  // a set of 4 and a set of 2 exist
+        keyForTwoFound = true;
       }
     }
 
-    return 0; // only a set of four (scored in another method)
+    if(keyForFourFound && keyForTwoFound) {
+      return NUM_POINTS_FOR_ONE_SET_OF_FOUR_AND_ONE_SET_OF_TWO;
+    }
+
+    return 0;
   }
 
   private int scoreTwoSetsOfThree(HashMap<Integer, Integer> counts) {
-    return scoreNSetsOfNDice(counts, 2, 3, NUM_POINTS_FOR_TWO_SETS_OF_THREE);
+    int numDiceSets = 2;
+    int diceInEachSet = 3;
+    return scoreNSetsOfNDice(counts, numDiceSets, diceInEachSet, NUM_POINTS_FOR_TWO_SETS_OF_THREE);
   }
 
   private int scoreNSetsOfNDice(HashMap<Integer, Integer> counts, int numSets, int numDiceInEachSet, int pointsToGain) {

@@ -83,6 +83,21 @@ public class ScoreCalculatorTest {
   }
 
   @Test
+  public void checkFourOnesAndAFive() {
+    testDiceRoll(new int[]{1, 1, 1, 1, 4, 5}, ScoreCalculator.FACTOR_POINTS_FOR_FOUR_OR_MORE_OF_SAME + ScoreCalculator.NUM_POINTS_FOR_FIVE);
+  }
+
+  @Test
+  public void checkFiveOnesAndAFive() {
+    testDiceRoll(new int[]{1, 5, 1, 1, 1, 1}, ScoreCalculator.FACTOR_POINTS_FOR_FOUR_OR_MORE_OF_SAME * 2 + ScoreCalculator.NUM_POINTS_FOR_FIVE);
+  }
+
+  @Test
+  public void checkThreeSixesAFiveAndTwoOnes() {
+    testDiceRoll(new int[]{1, 5, 6, 6, 1, 6}, ScoreCalculator.FACTOR_POINTS_FOR_THREE_OF_SAME * 6 + ScoreCalculator.NUM_POINTS_FOR_FIVE + ScoreCalculator.NUM_POINTS_FOR_ONE * 2);
+  }
+
+  @Test
   public void checkFiveOnes() {
     testDiceRoll(new int[]{1, 1, 1, 1, 1, 6}, ScoreCalculator.FACTOR_POINTS_FOR_FOUR_OR_MORE_OF_SAME * 2);
   }
@@ -225,6 +240,16 @@ public class ScoreCalculatorTest {
   @Test
   public void checkTwoSetsOfThreeWithFives() {
     testDiceRoll(new int[]{4, 4, 4, 5, 5, 5}, ScoreCalculator.NUM_POINTS_FOR_TWO_SETS_OF_THREE);
+  }
+
+  @Test
+  public void checkRollWithLessThanAllDiceAndOnes() {
+    testDiceRoll(new int[]{1, 1, 2}, ScoreCalculator.NUM_POINTS_FOR_ONE * 2);
+  }
+
+  @Test
+  public void checkRollWithLessThanAllDiceAndSixes() {
+    testDiceRoll(new int[]{6, 6, 5, 6}, ScoreCalculator.FACTOR_POINTS_FOR_THREE_OF_SAME * 6 + ScoreCalculator.NUM_POINTS_FOR_FIVE);
   }
 
   private void testDiceRoll(int[] dieValsArray, int expectedPoints) {
