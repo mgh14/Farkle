@@ -24,6 +24,7 @@ public class PropertiesManager {
     public static final int DEFAULT_MIN_NUM_DICE = 1;
     public static final int DEFAULT_NUM_DICE = 6;
     public static final int DEFAULT_REQ_POINTS_FOR_WIN = 10000;
+    public static final int DEFAULT_REQ_POINTS_TO_GET_ANY_POINTS = 500;
     public static final int DEFAULT_ERROR_INDICATOR = -1;
 
     private static HashMap<String, String> properties;
