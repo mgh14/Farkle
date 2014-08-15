@@ -8,23 +8,64 @@ public class ScoreCalculator {
 
   public static final int NUM_POINTS_FOR_ONE = 100;
   public static final int NUM_POINTS_FOR_FIVE = 50;
+  public static final int FACTOR_POINTS_FOR_THREE_OF_SAME = 100;
+  public static final int FACTOR_POINTS_FOR_FOUR_OR_MORE_OF_SAME = 1000;
+  public static final int NUM_POINTS_FOR_STRAIGHT = 1500;
+  public static final int NUM_POINTS_FOR_THREE_SETS_OF_TWO = NUM_POINTS_FOR_STRAIGHT;
+  public static final int NUM_POINTS_FOR_ONE_SET_OF_FOUR_AND_ONE_SET_OF_TWO = NUM_POINTS_FOR_STRAIGHT;
+  public static final int NUM_POINTS_FOR_TWO_SETS_OF_THREE = 2500;
+
+  /*public enum ScoreType {
+    SetOf
+  }*/
 
   public ScoreCalculator() {}
 
   public int calculateRollScore(Roll roll) {
-      final HashMap<Integer, Integer> counts = assignDieValueCounts(roll);
+    final HashMap<Integer, Integer> counts = assignDieValueCounts(roll);
 
-      int score = 0;
+    // n number of dice of same numeric value (e.g. two 5's or 4 6's)
+    int highestScore = 0;
+    int oneAndFivesScore = 0;
+    for (Integer key : counts.keySet()) {
+      int oneSetOfNScore = getCorrespondingScore(key, counts.get(key));
+      if(key == 1 || key == 5) {
+        oneAndFivesScore += oneSetOfNScore;
+      }
 
-      // n number of dice of same numeric value (e.g. two 5's or 4 6's)
-      for(int i= PropertiesManager.getMinDieValue(); i<=PropertiesManager.getMaxDieValue(); i++)
-          score += scoreNDiceOfSameValue(counts, i);
+      if(oneSetOfNScore > highestScore) {
+        highestScore = oneSetOfNScore;
+      }
+      if(oneAndFivesScore > highestScore) {
+        highestScore = oneAndFivesScore;
+      }
+    }
 
-      // straight (1 - 6)
-          score += scoreStraightRun(counts);
+    // straight (1 - 6)
+    int straightScore = scoreStraightRun(counts);
+    if(straightScore > highestScore) {
+      highestScore = straightScore;
+    }
 
+    // three sets of two
+    int threeSetsOfTwoScore = scoreThreeSetsOfTwo(counts);
+    if(threeSetsOfTwoScore > highestScore) {
+      highestScore = threeSetsOfTwoScore;
+    }
 
-      return score;
+    // a set of four and a set of two
+    int setOfFourAndSetOfTwoScore = scoreASetOfFourAndASetOfTwo(counts);
+    if(setOfFourAndSetOfTwoScore > highestScore) {
+      highestScore = setOfFourAndSetOfTwoScore;
+    }
+
+    // two sets of three
+    int twoSetsOfThreeScore = scoreTwoSetsOfThree(counts);
+    if(twoSetsOfThreeScore > highestScore) {
+      highestScore = twoSetsOfThreeScore;
+    }
+
+    return highestScore;
   }
 
   private HashMap<Integer, Integer> assignDieValueCounts(Roll roll) {
@@ -41,20 +82,77 @@ public class ScoreCalculator {
       return counts;
   }
 
-  private int scoreNDiceOfSameValue(HashMap<Integer, Integer> counts, int dieValue) {
-      return 0;
-  }
+  /*You cannot count any of your points until you reach at least 500 points in a single round. When you reach 500 points for the first time, you may choose to immediately end your turn to prevent losing the points.
+    5′s = 50 point
+    1′s = 100 points
+    1,1,1 = 300 points
+    2,2,2 = 200 points
+    3,3,3 = 300 points
+    4,4,4 = 400 points
+    5,5,5 = 500 points
+    6,6,6 = 600 points
+    Four of a Kind = 1,000 points
+    Five of a Kind = 2,000 points
+    Six of a Kind = 3,000 points
+    A Straight of 1-6 = 1,500 points
+    Three Pairs = 1,500 points
+    Four of a Kind + a Pair = 1,500
+    Two sets of Three of a Kind = 2,500
+  */
 
-  private int scoreThreeSetsOfTwo(HashMap<Integer, Integer> counts) {
-    return scoreNSetsOfNDice(counts, 3, 2, 5000);
-  }
-
-  private int scoreTwoSetsOfThree(HashMap<Integer, Integer> counts) {
-    return scoreNSetsOfNDice(counts, 2, 3, 10000);
+  private int getCorrespondingScore(int keyVal, int numDice) {
+    if(keyVal == PropertiesManager.getMinDieValue() && numDice <= 3) {
+      return NUM_POINTS_FOR_ONE * numDice;
+    }
+    else if(keyVal == PropertiesManager.getMaxDieValue() - 1 && numDice <= 2) {
+      return NUM_POINTS_FOR_FIVE * numDice;
+    }
+    else if(numDice == 3) {
+      return FACTOR_POINTS_FOR_THREE_OF_SAME * keyVal;
+    }
+    else {
+      return FACTOR_POINTS_FOR_FOUR_OR_MORE_OF_SAME * (numDice - (PropertiesManager.getMaxDieValue() / 2));
+    }
   }
 
   private int scoreStraightRun(HashMap<Integer, Integer> counts) {
-    return scoreNSetsOfNDice(counts, 6, 1, 20000);
+    return scoreNSetsOfNDice(counts, 6, 1, NUM_POINTS_FOR_STRAIGHT);
+  }
+
+  private int scoreThreeSetsOfTwo(HashMap<Integer, Integer> counts) {
+    return scoreNSetsOfNDice(counts, 3, 2, NUM_POINTS_FOR_THREE_SETS_OF_TWO);
+  }
+
+  private int scoreASetOfFourAndASetOfTwo(HashMap<Integer, Integer> counts) {
+    int keyForCountOfFourDice = -1;
+    for(Integer key : counts.keySet()) {
+      int countForCurrentKey = counts.get(key);
+      if(countForCurrentKey == 4) {
+        keyForCountOfFourDice = countForCurrentKey;
+      }
+    }
+
+    // no set with exactly four dice
+    if(keyForCountOfFourDice == -1) {
+      return 0;
+    }
+
+    for(Integer key : counts.keySet()) {
+      if(key == keyForCountOfFourDice) {
+        continue;   // don't count the same key twice
+      }
+
+      int countForCurrentKey = counts.get(key);
+      if(countForCurrentKey == 2) {
+        return NUM_POINTS_FOR_ONE_SET_OF_FOUR_AND_ONE_SET_OF_TWO;  // a set of 4 and a set of 2 exist
+      }
+    }
+
+    return 0; // only a set of four (scored in another method)
+  }
+
+  private int scoreTwoSetsOfThree(HashMap<Integer, Integer> counts) {
+    return scoreNSetsOfNDice(counts, 2, 3, NUM_POINTS_FOR_TWO_SETS_OF_THREE);
   }
 
   private int scoreNSetsOfNDice(HashMap<Integer, Integer> counts, int numSets, int numDiceInEachSet, int pointsToGain) {
