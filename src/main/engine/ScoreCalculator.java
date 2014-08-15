@@ -21,6 +21,25 @@ public class ScoreCalculator {
 
   public ScoreCalculator() {}
 
+    /*You cannot count any of your points until you reach at least 500 points in a single round. When you reach 500 points for the first time, you may choose to
+      immediately end your turn to prevent losing the points.
+    5′s = 50 points
+    1′s = 100 points
+    1,1,1 = 300 points
+    2,2,2 = 200 points
+    3,3,3 = 300 points
+    4,4,4 = 400 points
+    5,5,5 = 500 points
+    6,6,6 = 600 points
+    Four of a Kind = 1,000 points
+    Five of a Kind = 2,000 points
+    Six of a Kind = 3,000 points
+    A Straight of 1-6 = 1,500 points
+    Three Pairs = 1,500 points
+    Four of a Kind + a Pair = 1,500
+    Two sets of Three of a Kind = 2,500
+  */
+
   public int calculateRollScore(Roll roll) {
     final HashMap<Integer, Integer> counts = assignDieValueCounts(roll);
 
@@ -81,24 +100,6 @@ public class ScoreCalculator {
 
       return counts;
   }
-
-  /*You cannot count any of your points until you reach at least 500 points in a single round. When you reach 500 points for the first time, you may choose to immediately end your turn to prevent losing the points.
-    5′s = 50 point
-    1′s = 100 points
-    1,1,1 = 300 points
-    2,2,2 = 200 points
-    3,3,3 = 300 points
-    4,4,4 = 400 points
-    5,5,5 = 500 points
-    6,6,6 = 600 points
-    Four of a Kind = 1,000 points
-    Five of a Kind = 2,000 points
-    Six of a Kind = 3,000 points
-    A Straight of 1-6 = 1,500 points
-    Three Pairs = 1,500 points
-    Four of a Kind + a Pair = 1,500
-    Two sets of Three of a Kind = 2,500
-  */
 
   private int getCorrespondingScore(int keyVal, int numDice) {
     if(keyVal == PropertiesManager.getMinDieValue() && numDice <= 3) {
