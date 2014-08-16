@@ -89,7 +89,7 @@ public class PropertiesManager {
 
         properties.put(CONFIG_FILENAME_PROP_NAME, configFile);*/
 
-        return true;
+        return false;
     }
 
     public static int getProperty(String propertyName) {
