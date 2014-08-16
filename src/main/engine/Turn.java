@@ -15,26 +15,25 @@ public class Turn {
     player = playerWhoTakesTurn;
   }
 
-    /*public Turn(Roll playerRoll, RollScore playerScore, Player playerWhoTookTurn) {
-        roll = playerRoll;
+  public Player getPlayerWhoTookTurn() {
+    return player;
+  }
 
+  public void addRoll(Roll playerRoll) {
+    roll.add(playerRoll);
+  }
 
-        scores = playerScore;
+  public void addRollScore(RollScore playerScore) {
+    scores.add(playerScore);
+  }
 
-
-
-        player = playerWhoTookTurn;
-    }*/
-
-    /*public Roll getRoll() {
-        return roll;
+  public int getTotalScoreForTurn() {
+    int total = 0;
+    for(RollScore current : scores) {
+      total += current.getNumberOfPoints();
     }
 
-    public RollScore getDiceScore() {
-        return scores;
-    }
+    return total;
+  }
 
-    public Player getPlayer() {
-        return player;
-    }*/
 }
