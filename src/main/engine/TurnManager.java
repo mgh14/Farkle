@@ -24,18 +24,6 @@ public class TurnManager {
     setCurrentPlayerIndex(0);
   }
 
-  private void setIsPlayerTakingTurn(boolean state) {
-    isPlayerTakingTurn = state;
-  }
-
-  private void setCurrentPlayerIndex(int playerIndex) {
-    if(playerIndex < 0 || playerIndex > PropertiesManager.getNumPlayers() - 1) {
-      throw new IllegalArgumentException("playerIndex " + playerIndex + " isnt a valid index");
-    }
-
-    currentPlayerIndex = playerIndex;
-  }
-
   public void startTurn() {
     if(isPlayerTakingTurn()) {
       throw new IllegalStateException("Cant start turn; a player is currently taking a turn");
@@ -61,10 +49,6 @@ public class TurnManager {
     currentTurn.addRollScore(rollScore);
   }
 
-  private void setCurrentTurn(Turn turn) {
-    currentTurn = turn;
-  }
-
   public void endTurn() {
     if(!isPlayerTakingTurn()) {
       throw new IllegalStateException("Cant end turn; no player is currently taking their turn");
@@ -85,12 +69,16 @@ public class TurnManager {
     return currentPlayerIndex;
   }
 
-  public void undoTurn() {
+  public void undoLastCompletedTurn() {
     turns.remove(turns.remove(turns.size() - 1));
 
     setIsPlayerTakingTurn(false);
 
     setLastPlayerTakingTurn();
+  }
+
+  private void setCurrentTurn(Turn turn) {
+    currentTurn = turn;
   }
 
   private void setNextPlayerTakingTurn() {
@@ -110,6 +98,18 @@ public class TurnManager {
     if(currentPlayerIndex < 0) {
       currentPlayerIndex += PropertiesManager.getNumPlayers();
     }
+  }
+
+  private void setIsPlayerTakingTurn(boolean state) {
+    isPlayerTakingTurn = state;
+  }
+
+  private void setCurrentPlayerIndex(int playerIndex) {
+    if(playerIndex < 0 || playerIndex > PropertiesManager.getNumPlayers() - 1) {
+      throw new IllegalArgumentException("playerIndex " + playerIndex + " isnt a valid index");
+    }
+
+    currentPlayerIndex = playerIndex;
   }
 
 }
