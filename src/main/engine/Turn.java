@@ -5,13 +5,13 @@ import java.util.List;
 
 public class Turn {
 
-    final private List<Roll> roll;
+    final private List<Roll> rolls;
     final private List<RollScore> scores;
     final private Player player;
 
-  public Turn(Player playerWhoTakesTurn) {
-    roll = new LinkedList<Roll>();
-    scores = new LinkedList<RollScore>();
+  public Turn(List<Roll> diceRolls, List<RollScore> playerScores, Player playerWhoTakesTurn) {
+    rolls = diceRolls;
+    scores = playerScores;
     player = playerWhoTakesTurn;
   }
 
@@ -19,12 +19,8 @@ public class Turn {
     return player;
   }
 
-  public void addRoll(Roll playerRoll) {
-    roll.add(playerRoll);
-  }
-
-  public void addRollScore(RollScore playerScore) {
-    scores.add(playerScore);
+  public int getNumRolls() {
+    return rolls.size();
   }
 
   public int getTotalScoreForTurn() {

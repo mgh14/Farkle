@@ -10,29 +10,21 @@ public class DieValueGenerator {
 
     private Random generator;
 
-  public DieValueGenerator(Random random) {
-    setRandom(random);
-  }
-
   public DieValueGenerator() {
-    setRandom(null);
+    generator = new Random();
   }
 
-  public void setRandom(Random random) {
-    generator = (random != null) ? random : new Random();
-  }
-
-  public DieValue getRoll(int minVal, int maxVal) {
+  public DieValue getDieValue(int minVal, int maxVal) {
     verifyMinAndMaxValid(minVal, maxVal);
     return new DieValue(generator.nextInt((maxVal - minVal) + 1) + minVal);
   }
 
-  public List<DieValue> getTurnRoll(int minVal, int maxVal, int numDice) {
+  public List<DieValue> getDieValues(int minVal, int maxVal, int numDice) {
     verifyNumDiceIsValid(numDice);
 
     List<DieValue> rolls = new ArrayList<DieValue>();
     for(int i=0; i<numDice; i++) {
-      rolls.add(getRoll(minVal, maxVal)); // min, max are verified here
+      rolls.add(getDieValue(minVal, maxVal)); // min, max are verified here
     }
 
     return rolls;

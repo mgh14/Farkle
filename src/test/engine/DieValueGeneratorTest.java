@@ -98,14 +98,14 @@ public class DieValueGeneratorTest {
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void testGetRollWithInvalidMinAndMaxVals() {
-    generator.getRoll(MAX_VAL, MIN_VAL);
+    generator.getDieValue(MAX_VAL, MIN_VAL);
   }
 
   @Test
   public void testGetRollWithValidMinAndMax() {
     when(random.nextInt(MAX_VAL)).thenReturn(MIN_VAL - 1);
 
-    assertEquals(MIN_VAL, generator.getRoll(MIN_VAL, MAX_VAL).getDieValue());
+    assertEquals(MIN_VAL, generator.getDieValue(MIN_VAL, MAX_VAL).getDieValue());
     verify(random).nextInt(MAX_VAL);
   }
 
@@ -127,12 +127,12 @@ public class DieValueGeneratorTest {
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void testTurnRollWithInvalidNumDice() {
-    generator.getTurnRoll(MIN_VAL, MAX_VAL, MIN_DICE_REQ - 1);
+    generator.getDieValues(MIN_VAL, MAX_VAL, MIN_DICE_REQ - 1);
   }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void testTurnRollWithInvalidMinAndMax() {
-    generator.getTurnRoll(MAX_VAL, MIN_VAL, MIN_DICE_REQ);
+    generator.getDieValues(MAX_VAL, MIN_VAL, MIN_DICE_REQ);
   }
 
   @Test
@@ -140,7 +140,7 @@ public class DieValueGeneratorTest {
     int result = MAX_VAL - 1;
     when(random.nextInt(anyInt())).thenReturn(result);
 
-    List<DieValue> dieVals = generator.getTurnRoll(MIN_VAL, MAX_VAL, MIN_DICE_REQ);
+    List<DieValue> dieVals = generator.getDieValues(MIN_VAL, MAX_VAL, MIN_DICE_REQ);
     assertEquals(MIN_DICE_REQ, dieVals.size());
     assertEquals(result + 1, dieVals.get(0).getDieValue());
     verify(random).nextInt(anyInt());
@@ -151,7 +151,7 @@ public class DieValueGeneratorTest {
     int result = MAX_VAL - 1;
     when(random.nextInt(anyInt())).thenReturn(result);
 
-    List<DieValue> dieVals = generator.getTurnRoll(MIN_VAL, MAX_VAL, MIN_DICE_REQ + 1);
+    List<DieValue> dieVals = generator.getDieValues(MIN_VAL, MAX_VAL, MIN_DICE_REQ + 1);
     assertEquals(MIN_DICE_REQ + 1, dieVals.size());
     for(int i=0; i<MIN_DICE_REQ + 1; i++) {
       assertEquals(result + 1, dieVals.get(i).getDieValue());

@@ -7,20 +7,22 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class TurnManager {
+
   private List<Turn> turns = new LinkedList<Turn>();
   private List<Player> players = new ArrayList<Player>();
   private int currentPlayerIndex;
 
-  private Turn currentTurn;
-
   private boolean isPlayerTakingTurn = false;
 
   public TurnManager(Player ... gamePlayers) {
+    if(gamePlayers == null || gamePlayers.length == 0) {
+      throw new IllegalArgumentException("must be at least one player");
+    }
+
     for(Player player : players) {
       players.add(player);
     }
 
-    setCurrentTurn(null);
     setCurrentPlayerIndex(0);
   }
 
@@ -29,44 +31,29 @@ public class TurnManager {
       throw new IllegalStateException("Cant start turn; a player is currently taking a turn");
     }
 
-    currentTurn = new Turn(players.get(currentPlayerIndex));
     setIsPlayerTakingTurn(true);
   }
 
-  public void addRollToTurn(Roll roll) {
-    if(!isPlayerTakingTurn()) {
-      throw new IllegalStateException("Cant add roll; no player is currently taking their turn");
-    }
-
-    currentTurn.addRoll(roll);
-  }
-
-  public void addRollScoreToTurn(RollScore rollScore) {
-    if(!isPlayerTakingTurn()) {
-      throw new IllegalStateException("Cant add roll; no player is currently taking their turn");
-    }
-
-    currentTurn.addRollScore(rollScore);
-  }
-
-  public void endTurn() {
+  public void endTurn(Turn finishedTurn) {
     if(!isPlayerTakingTurn()) {
       throw new IllegalStateException("Cant end turn; no player is currently taking their turn");
     }
+    if(finishedTurn == null) {
+        throw new IllegalArgumentException("finished turn cant be null");
+    }
 
-    turns.add(currentTurn);
+    turns.add(finishedTurn);
 
-    setCurrentTurn(null);
-
-    isPlayerTakingTurn = false;
+    setNextPlayerTakingTurn();
+    setIsPlayerTakingTurn(false);
   }
 
   public boolean isPlayerTakingTurn() {
     return isPlayerTakingTurn;
   }
 
-  public int getCurrentPlayerIndex() {
-    return currentPlayerIndex;
+  public Player getCurrentPlayer() {
+    return players.get(currentPlayerIndex);
   }
 
   public void undoLastCompletedTurn() {
@@ -75,10 +62,6 @@ public class TurnManager {
     setIsPlayerTakingTurn(false);
 
     setLastPlayerTakingTurn();
-  }
-
-  private void setCurrentTurn(Turn turn) {
-    currentTurn = turn;
   }
 
   private void setNextPlayerTakingTurn() {
