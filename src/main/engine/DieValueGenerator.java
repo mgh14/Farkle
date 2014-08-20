@@ -14,6 +14,10 @@ public class DieValueGenerator {
     generator = new Random();
   }
 
+    public DieValueGenerator(Random random) {
+        generator = random;
+    }
+
   public DieValue getDieValue(int minVal, int maxVal) {
     verifyMinAndMaxValid(minVal, maxVal);
     return new DieValue(generator.nextInt((maxVal - minVal) + 1) + minVal);
