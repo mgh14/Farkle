@@ -17,11 +17,14 @@ public class Turn {
     player = playerWhoTakesTurn;
   }
 
-    public void addRoll(Roll newRoll) {
-        rolls.add(newRoll);
+  public void addRoll(Roll newRoll) {
+    if(newRoll == null) {
+      throw new IllegalArgumentException("Roll cant be null");
     }
+        rolls.add(newRoll);
+  }
 
-  public Player getPlayerWhoTookTurn() {
+  public final Player getTurnPlayer() {
     return player;
   }
 
@@ -40,6 +43,10 @@ public class Turn {
 
   public boolean canRollAgain(ScoreCalculator scoreCalc) {
       return !rolls.isEmpty() && rolls.get(rolls.size() - 1).canRollAgain(scoreCalc);
+  }
+
+  public final List<Roll> getRolls() {
+    return rolls;
   }
 
 }
