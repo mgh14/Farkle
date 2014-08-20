@@ -7,22 +7,22 @@ import java.util.List;
 
 public class RollManager {
 
-    private List<Roll> rolls;
-    private List<RollScore> scores;
-
-    private Roll currentRoll;
-    private RollScore currentRollScore;
+    private List<Turn> rolls;
+    private Turn currentTurn;
 
     private DieValueGenerator generator;
     private ScoreCalculator scoreCalc;
 
     public RollManager() {
-        rolls = new LinkedList<Roll>();
-        scores = new LinkedList<RollScore>();
-        setCurrentRoll(null);
+        rolls = new LinkedList<Turn>();
+        setCurrentTurn(null);
 
         generator = new DieValueGenerator();
         scoreCalc = new ScoreCalculator();
+    }
+
+    private void setCurrentTurn(Turn turn) {
+        currentTurn = turn;
     }
 
     private Roll getRoll(int numDice) {
@@ -30,52 +30,32 @@ public class RollManager {
                 PropertiesManager.getMaxDieValue(), numDice));
     }
 
-    public Roll beginRoll() {
-        setCurrentRoll(getRoll(PropertiesManager.getNumDice()));
-        return currentRoll;
-    }
+/*    public int keepDieValues(int ... dieVals) {
 
-    public int keepDieValues(int ... dieVals) {
-
-    }
-
-    public int endRoll() {
-        setCurrentRoll(null);
     }
 
     public Roll getNextRoll() {
-        if(!canGetNextRoll()) {
+        if(!canRollAgain()) {
             throw new IllegalStateException("no more rolls allowed");
         }
 
         int size = currentRoll.getDiceVals().size();
 
         return getRoll();
+    }*/
+
+    public boolean canRollAgain() {
+        return currentTurn == null || currentTurn.canRollAgain(scoreCalc);
     }
 
-    public boolean inRollState() {
-        return currentRoll != null;
-    }
-
-    public boolean canGetNextRoll() {
-      return scoreCalc.calculateRollScore(currentRoll) > 0;
-    }
-
-    public void addRoll(Roll playerRoll) {
+/*    public void addRoll(Roll playerRoll) {
         rolls.add(playerRoll);
     }
 
-    public void addRollScore(RollScore playerScore) {
-        scores.add(playerScore);
-    }
+*/
 
-    public void removeLastRoll() {
-        scores.remove(scores.size() - 1);
-        rolls.remove(rolls.size() - 1);
-    }
-
-    private void setCurrentRoll(Roll roll) {
-        currentRoll = null;
-    }
+ /*   public void undoLastTurn() {
+        turns.remove(turns.size() - 1);
+    }*/
 
 }
