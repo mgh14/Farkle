@@ -258,10 +258,10 @@ public class ScoreCalculatorTest {
       dieVals.add(new DieValue(val));
     }
 
-    when(roll.getDiceVals()).thenReturn(dieVals);
+    when(roll.getDiceKept()).thenReturn(dieVals);
 
     assertEquals(scoreCalc.calculateRollScore(roll), expectedPoints);
-    verify(roll).getDiceVals();
+    verify(roll).getDiceKept();
   }
 
 

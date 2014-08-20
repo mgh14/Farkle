@@ -3,6 +3,7 @@ package main.engine;
 import main.engine.properties.PropertiesManager;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class ScoreCalculator {
 
@@ -41,7 +42,11 @@ public class ScoreCalculator {
   */
 
   public int calculateRollScore(Roll roll) {
-    final HashMap<Integer, Integer> counts = assignDieValueCounts(roll);
+      return calculateRollScore(roll.getDiceKept());
+  }
+
+  public int calculateRollScore(List<DieValue> diceKept) {
+    final HashMap<Integer, Integer> counts = assignDieValueCounts(diceKept);
 
     int highestScore = 0;
 
@@ -77,13 +82,13 @@ public class ScoreCalculator {
     return highestScore;
   }
 
-  private HashMap<Integer, Integer> assignDieValueCounts(Roll roll) {
+  private HashMap<Integer, Integer> assignDieValueCounts(List<DieValue> diceVals) {
     HashMap<Integer, Integer> counts = new HashMap<Integer, Integer>();
     for(int i=PropertiesManager.getMinDieValue(); i<=PropertiesManager.getMaxDieValue(); i++) {
       counts.put(i, 0);
     }
 
-    for(DieValue dieValue : roll.getDiceVals()) {
+    for(DieValue dieValue : diceVals) {
         int mine = dieValue.getDieValue();
         counts.put(mine, counts.get(mine) + 1);
     }
