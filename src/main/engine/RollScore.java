@@ -6,21 +6,21 @@ import java.util.List;
 public class RollScore {
 
   private final int numPoints;
-  private final List<DieValue> rollsKept;
+  private final List<DieValue> diceVals;
 
-  public RollScore(int NUM_POINTS, List<DieValue> DICE_VALS) {
-    numPoints = NUM_POINTS;
+  public RollScore(List<DieValue> diceKept, int pointsGained) {
+    numPoints = pointsGained;
 
-    rollsKept = new LinkedList<DieValue>();
-    rollsKept.addAll(DICE_VALS);
+    diceVals = new LinkedList<DieValue>();
+    diceVals.addAll(diceKept);
   }
 
-  public int getNumberOfPoints() {
-      return numPoints;
+  public List<DieValue> getDiceKept() {
+      return diceVals;
   }
 
-  public List<DieValue> getRollsKept() {
-      return rollsKept;
-  }
+    public int getNumberOfPoints() {
+        return numPoints;
+    }
 
 }
