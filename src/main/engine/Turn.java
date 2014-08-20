@@ -6,14 +6,20 @@ import java.util.List;
 public class Turn {
 
     final private List<Roll> rolls;
-    final private List<RollScore> scores;
     final private Player player;
 
-  public Turn(List<Roll> diceRolls, List<RollScore> playerScores, Player playerWhoTakesTurn) {
-    rolls = diceRolls;
-    scores = playerScores;
+  public Turn(Player playerWhoTakesTurn) {
+      if(playerWhoTakesTurn == null) {
+          throw new IllegalArgumentException("player for turn cant be null");
+      }
+
+    rolls = new LinkedList<Roll>();
     player = playerWhoTakesTurn;
   }
+
+    public void addRoll(Roll newRoll) {
+        rolls.add(newRoll);
+    }
 
   public Player getPlayerWhoTookTurn() {
     return player;
@@ -25,11 +31,15 @@ public class Turn {
 
   public int getTotalScoreForTurn() {
     int total = 0;
-    for(RollScore current : scores) {
-      total += current.getNumberOfPoints();
+    for(Roll current : rolls) {
+      total += current.getScoreForRoll();
     }
 
     return total;
+  }
+
+  public boolean canRollAgain(ScoreCalculator scoreCalc) {
+      return !rolls.isEmpty() && rolls.get(rolls.size() - 1).canRollAgain(scoreCalc);
   }
 
 }
