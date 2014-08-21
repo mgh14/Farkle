@@ -42,7 +42,7 @@ public class ScoreCalculator {
   */
 
   public int calculateRollScore(Roll roll) {
-      return calculateRollScore(roll.getDiceKept());
+    return calculateRollScore(roll.getDiceKept());
   }
 
   public int calculateRollScore(List<DieValue> diceKept) {
@@ -57,25 +57,25 @@ public class ScoreCalculator {
 
     // straight (1 - 6)
     int straightScore = scoreStraightRun(counts);
-    if(straightScore > highestScore) {
+    if (straightScore > highestScore) {
       highestScore = straightScore;
     }
 
     // three sets of two
     int threeSetsOfTwoScore = scoreThreeSetsOfTwo(counts);
-    if(threeSetsOfTwoScore > highestScore) {
+    if (threeSetsOfTwoScore > highestScore) {
       highestScore = threeSetsOfTwoScore;
     }
 
     // a set of four and a set of two
     int setOfFourAndSetOfTwoScore = scoreASetOfFourAndASetOfTwo(counts);
-    if(setOfFourAndSetOfTwoScore > highestScore) {
+    if (setOfFourAndSetOfTwoScore > highestScore) {
       highestScore = setOfFourAndSetOfTwoScore;
     }
 
     // two sets of three
     int twoSetsOfThreeScore = scoreTwoSetsOfThree(counts);
-    if(twoSetsOfThreeScore > highestScore) {
+    if (twoSetsOfThreeScore > highestScore) {
       highestScore = twoSetsOfThreeScore;
     }
 
@@ -84,36 +84,36 @@ public class ScoreCalculator {
 
   private HashMap<Integer, Integer> assignDieValueCounts(List<DieValue> diceVals) {
     HashMap<Integer, Integer> counts = new HashMap<Integer, Integer>();
-    for(int i=PropertiesManager.getMinDieValue(); i<=PropertiesManager.getMaxDieValue(); i++) {
+    for (int i = PropertiesManager.getMinDieValue(); i <= PropertiesManager.getMaxDieValue(); i++) {
       counts.put(i, 0);
     }
 
-    for(DieValue dieValue : diceVals) {
-        int mine = dieValue.getDieValue();
-        counts.put(mine, counts.get(mine) + 1);
+    for (DieValue dieValue : diceVals) {
+      int mine = dieValue.getDieValue();
+      counts.put(mine, counts.get(mine) + 1);
     }
 
-      return counts;
+    return counts;
   }
 
   private int scoreDiceOfSameValue(int keyVal, int numDice) {
     // for ones
-    if(keyVal == PropertiesManager.getMinDieValue() && numDice <= 3) {
+    if (keyVal == PropertiesManager.getMinDieValue() && numDice <= 3) {
       return NUM_POINTS_FOR_ONE * numDice;
     }
 
     // for fives
-    else if(keyVal == PropertiesManager.getMaxDieValue() - 1 && numDice <= 2) {
+    else if (keyVal == PropertiesManager.getMaxDieValue() - 1 && numDice <= 2) {
       return NUM_POINTS_FOR_FIVE * numDice;
     }
 
     // for any dice number
-    else if(numDice == 3) {
+    else if (numDice == 3) {
       return FACTOR_POINTS_FOR_THREE_OF_SAME * keyVal;
     }
 
     // for any dice number
-    else if(numDice > 3) {
+    else if (numDice > 3) {
       return FACTOR_POINTS_FOR_FOUR_OR_MORE_OF_SAME * (numDice - (PropertiesManager.getMaxDieValue() / 2));
     }
 
@@ -133,17 +133,17 @@ public class ScoreCalculator {
   private int scoreASetOfFourAndASetOfTwo(HashMap<Integer, Integer> counts) {
     boolean keyForFourFound = false;
     boolean keyForTwoFound = false;
-    for(Integer key : counts.keySet()) {
+    for (Integer key : counts.keySet()) {
       int countForCurrentKey = counts.get(key);
-      if(countForCurrentKey == 4) {
+      if (countForCurrentKey == 4) {
         keyForFourFound = true;
       }
-      if(countForCurrentKey == 2) {
+      if (countForCurrentKey == 2) {
         keyForTwoFound = true;
       }
     }
 
-    if(keyForFourFound && keyForTwoFound) {
+    if (keyForFourFound && keyForTwoFound) {
       return NUM_POINTS_FOR_ONE_SET_OF_FOUR_AND_ONE_SET_OF_TWO;
     }
 
@@ -158,13 +158,13 @@ public class ScoreCalculator {
 
   private int scoreNSetsOfNDice(HashMap<Integer, Integer> counts, int numSets, int numDiceInEachSet, int pointsToGain) {
     int numSetsOfTwo = 0;
-    for(Integer key : counts.keySet()) {
-      if(counts.get(key) >= numDiceInEachSet) {
+    for (Integer key : counts.keySet()) {
+      if (counts.get(key) >= numDiceInEachSet) {
         numSetsOfTwo++;
       }
     }
 
-    if(numSetsOfTwo >= numSets) {
+    if (numSetsOfTwo >= numSets) {
       return pointsToGain;
     }
 
