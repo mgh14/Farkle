@@ -29,12 +29,12 @@ public class Roll {
     return valsCopy;
   }
 
-  public void setDiceKept(List<DieValue> diceKept, int pointsGained, ScoreCalculator scoreCalc) {
-    rollScore = new RollScore(diceKept, pointsGained, scoreCalc);
-  }
-
   public List<DieValue> getDiceKept() {
     return (rollScore != null) ? rollScore.getDiceKept() : null;
+  }
+
+  public void setDiceKept(List<DieValue> diceKept, int pointsGained, ScoreCalculator scoreCalc) {
+    rollScore = new RollScore(diceKept, pointsGained, scoreCalc);
   }
 
   public boolean canRollAgain(ScoreCalculator scoreCalc) {
@@ -49,28 +49,44 @@ public class Roll {
         return true;
     }
 
-    List<DieValue> leftoverDice = new LinkedList<DieValue>();
+    // todo: Check if this portion is necessary
+    /*List<DieValue> leftoverDice = new LinkedList<DieValue>();
     for(DieValue current : getDiceVals()) {
       if(!diceKept.contains(current)) {
           leftoverDice.add(current);
       }
-    }
+    }*/
 
-    return scoreCalc.calculateRollScore(leftoverDice) > 0;
+    return !diceKept.isEmpty() && !rollGainsNoPoints(scoreCalc) && !keptDiceGainNoPoints(scoreCalc);
   }
 
+  public boolean rollGainsNoPoints(ScoreCalculator scoreCalc) {
+    if(scoreCalc == null) {
+      throw new IllegalArgumentException("ScoreCalculator cant be null");
+    }
 
-  private void setNumDice(int numDice) {
-    if(numDice < PropertiesManager.DEFAULT_MIN_NUM_DICE) {
+    return scoreCalc.calculateRollScore(getDiceVals()) == 0;
+  }
+
+  public boolean keptDiceGainNoPoints(ScoreCalculator scoreCalc) {
+    if(scoreCalc == null) {
+      throw new IllegalArgumentException("ScoreCalculator cant be null");
+    }
+
+    return scoreCalc.calculateRollScore(getDiceKept()) == 0;
+  }
+
+  private void setMaxNumDice(int maxNumDice) {
+    if(maxNumDice < PropertiesManager.DEFAULT_MIN_NUM_DICE) {
       throw new IllegalArgumentException("Number of dice must be at least one");
     }
 
-    MAX_NUM_DICE = numDice;
+    MAX_NUM_DICE = maxNumDice;
   }
 
 	private void initializeDiceRole(int maxNumDice, List<DieValue> diceVals) {
     rollScore = null;
-		setNumDice(maxNumDice);
+		setMaxNumDice(maxNumDice);
 
     this.diceVals = (diceVals != null) ? diceVals : new LinkedList<DieValue>();
     verifyOnlyNDice(this.diceVals);
