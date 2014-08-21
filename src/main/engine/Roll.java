@@ -34,6 +34,23 @@ public class Roll {
   }
 
   public void setDiceKept(List<DieValue> diceKept, int pointsGained, ScoreCalculator scoreCalc) {
+    if(diceKept == null || diceKept.size() > diceVals.size()) {
+      throw new IllegalArgumentException("diceKept must be same size as dice vals");
+    }
+    for(DieValue dieKept : diceKept) {
+      if(!diceVals.contains(dieKept)) {
+        throw new IllegalArgumentException("Die " + dieKept.getDieValue() + " is not in the original roll");
+      }
+    }
+
+    if(pointsGained < 0) {
+      throw new IllegalArgumentException("Points gained cant be less than zero");
+    }
+
+    if(scoreCalc == null) {
+      throw new IllegalArgumentException("Score calculator cant be null");
+    }
+
     rollScore = new RollScore(diceKept, pointsGained, scoreCalc);
   }
 
