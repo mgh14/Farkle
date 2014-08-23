@@ -98,7 +98,7 @@ public class RollTest {
   }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
-  public void testSetDiceKeptWithNegativePointsGained() {
+  public void testSetDiceKeptWithLessThanMinPointsGained() {
     Roll roll = new Roll(DEFAULT_NUM_DICE, TEST_ROLL_LIST);
     roll.setDiceKept(TEST_ROLL_LIST, MIN_SCORE - 1, scoreCalc);
   }
@@ -135,6 +135,17 @@ public class RollTest {
     // should execute without throwing an exception
     roll.setDiceKept(getDiceVals(TEST_ROLL_ARRAY[0], TEST_ROLL_ARRAY[4]),
       TEST_ROLL_LIST_SCORE, scoreCalc);
+    verifyScoreCalcMock();
+  }
+
+  @Test()
+  public void testSetDiceKeptWithSomeDiceGivingPointsAndSomeDiceNoPoints() {
+    simulateScoreCalcMock(TEST_ROLL_LIST_SCORE);
+    Roll roll = new Roll(DEFAULT_NUM_DICE, TEST_ROLL_LIST);
+
+    // should execute without throwing an exception
+    roll.setDiceKept(getDiceVals(TEST_ROLL_ARRAY[0], TEST_ROLL_ARRAY[1],
+        TEST_ROLL_ARRAY[4]),TEST_ROLL_LIST_SCORE, scoreCalc);
     verifyScoreCalcMock();
   }
 
@@ -191,6 +202,17 @@ public class RollTest {
     verifyScoreCalcMock();
   }
 
+  @Test
+  public void testCanRollAgainWithDiceKeptThatDoAndDontGainPoints() {
+    simulateScoreCalcMock(TEST_ROLL_LIST_SCORE);
+    Roll roll = new Roll(DEFAULT_NUM_DICE, TEST_ROLL_LIST);
+    roll.setDiceKept(getDiceVals(TEST_ROLL_ARRAY[0], TEST_ROLL_ARRAY[1],
+      TEST_ROLL_ARRAY[4]), TEST_ROLL_LIST_SCORE, scoreCalc);
+
+    assertTrue(roll.canRollAgain(scoreCalc));
+    verifyScoreCalcMock();
+  }
+
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void testRollGainsNoPointsWithNullScoreCalc() {
     new Roll(DEFAULT_NUM_DICE, TEST_ROLL_LIST).rollGainsNoPoints(null);
@@ -208,6 +230,14 @@ public class RollTest {
     simulateScoreCalcMock(MIN_SCORE);
     assertTrue(new Roll(DEFAULT_NUM_DICE,
       getDiceVals(TEST_ROLL_ARRAY_NO_POINTS)).rollGainsNoPoints(scoreCalc));
+    verifyScoreCalcMock();
+  }
+
+  @Test
+  public void testRollGainsNoPointsWithDiceValsThatDoAndDontGainPoints() {
+    simulateScoreCalcMock(TEST_ROLL_LIST_SCORE);
+    assertFalse(new Roll(DEFAULT_NUM_DICE,
+      TEST_ROLL_LIST).rollGainsNoPoints(scoreCalc));
     verifyScoreCalcMock();
   }
 
@@ -233,6 +263,17 @@ public class RollTest {
     roll.setDiceKept(new LinkedList<DieValue>(), MIN_SCORE, scoreCalc);
 
     assertTrue(roll.keptDiceGainNoPoints(scoreCalc));
+    verifyScoreCalcMock();
+  }
+
+  @Test
+  public void testKeptDiceGainNoPointsWithDiceKeptThatDoAndDontGainPoints() {
+    simulateScoreCalcMock(TEST_ROLL_LIST_SCORE);
+    Roll roll = new Roll(DEFAULT_NUM_DICE, TEST_ROLL_LIST);
+    roll.setDiceKept(getDiceVals(TEST_ROLL_ARRAY[0], TEST_ROLL_ARRAY[1],
+      TEST_ROLL_ARRAY[4]), TEST_ROLL_LIST_SCORE, scoreCalc);
+
+    assertFalse(roll.keptDiceGainNoPoints(scoreCalc));
     verifyScoreCalcMock();
   }
 
