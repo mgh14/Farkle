@@ -12,7 +12,8 @@ import org.testng.annotations.Test;
 import java.util.LinkedList;
 import java.util.List;
 
-import static org.mockito.Matchers.anyList;
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
@@ -25,10 +26,12 @@ public class RollTest {
   private ScoreCalculator scoreCalc;
 
   private final int[] TEST_ROLL_ARRAY = {1, 2, 3, 4, 5, 4};
+  private final int[] TEST_ROLL_ARRAY_NO_POINTS = {2, 3, 4, 6, 4, 3};
   private final List<DieValue> TEST_ROLL_LIST = getDiceVals(TEST_ROLL_ARRAY);
   private final int TEST_ROLL_LIST_SCORE = ScoreCalculator.NUM_POINTS_FOR_ONE +
     ScoreCalculator.NUM_POINTS_FOR_FIVE;
   private final int DEFAULT_NUM_DICE = PropertiesManager.DEFAULT_NUM_DICE;
+  private final int MIN_SCORE = PropertiesManager.DEFAULT_MIN_SCORE;
 
   @BeforeMethod
   public void setUp() {
@@ -79,7 +82,7 @@ public class RollTest {
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void testSetDiceKeptWithNullDiceKept() {
     Roll roll = new Roll(DEFAULT_NUM_DICE, TEST_ROLL_LIST);
-    roll.setDiceKept(null, 0, scoreCalc);
+    roll.setDiceKept(null, MIN_SCORE, scoreCalc);
   }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
@@ -91,47 +94,58 @@ public class RollTest {
       diceKeptVals[i] = PropertiesManager.getMaxDieValue() - 1;
     }
 
-    roll.setDiceKept(getDiceVals(diceKeptVals), 0, scoreCalc);
+    roll.setDiceKept(getDiceVals(diceKeptVals), MIN_SCORE, scoreCalc);
   }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void testSetDiceKeptWithNegativePointsGained() {
     Roll roll = new Roll(DEFAULT_NUM_DICE, TEST_ROLL_LIST);
-    roll.setDiceKept(TEST_ROLL_LIST, -1, scoreCalc);
+    roll.setDiceKept(TEST_ROLL_LIST, MIN_SCORE - 1, scoreCalc);
   }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void testSetDiceKeptWithNullScoreCalc() {
     Roll roll = new Roll(DEFAULT_NUM_DICE, TEST_ROLL_LIST);
-    roll.setDiceKept(TEST_ROLL_LIST, 0, null);
+    roll.setDiceKept(TEST_ROLL_LIST, MIN_SCORE, null);
   }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
   public void testSetDiceKeptWithUnmatchingDiceKeptScoreAndPointsGained() {
-    when(scoreCalc.calculateRollScore(anyList())).thenReturn(TEST_ROLL_LIST_SCORE);
-
+    simulateScoreCalcMock(TEST_ROLL_LIST_SCORE);
     Roll roll = new Roll(DEFAULT_NUM_DICE, TEST_ROLL_LIST);
+
     roll.setDiceKept(TEST_ROLL_LIST, TEST_ROLL_LIST_SCORE - 1, scoreCalc);
-    verify(scoreCalc).calculateRollScore(anyList());
+  }
+
+  @Test
+  public void testSetDiceKeptWithNoDiceKept() {
+    simulateScoreCalcMock(MIN_SCORE);
+    Roll roll = new Roll(DEFAULT_NUM_DICE, TEST_ROLL_LIST);
+
+    // should execute without throwing an exception
+    roll.setDiceKept(new LinkedList<DieValue>(), MIN_SCORE, scoreCalc);
+    verifyScoreCalcMock();
   }
 
   @Test
   public void testSetDiceKeptWithSomeDiceKept() {
-    when(scoreCalc.calculateRollScore(anyList())).thenReturn(TEST_ROLL_LIST_SCORE);
+    simulateScoreCalcMock(TEST_ROLL_LIST_SCORE);
+    Roll roll = new Roll(DEFAULT_NUM_DICE, TEST_ROLL_LIST);
 
-    Roll roll = new Roll(DEFAULT_NUM_DICE, getDiceVals(TEST_ROLL_ARRAY));
+    // should execute without throwing an exception
     roll.setDiceKept(getDiceVals(TEST_ROLL_ARRAY[0], TEST_ROLL_ARRAY[4]),
       TEST_ROLL_LIST_SCORE, scoreCalc);
-    verify(scoreCalc).calculateRollScore(anyList());
+    verifyScoreCalcMock();
   }
 
   @Test
   public void testSetDiceKeptWithAllDiceKept() {
-    when(scoreCalc.calculateRollScore(anyList())).thenReturn(TEST_ROLL_LIST_SCORE);
-
+    simulateScoreCalcMock(TEST_ROLL_LIST_SCORE);
     Roll roll = new Roll(DEFAULT_NUM_DICE, getDiceVals(TEST_ROLL_ARRAY));
+
+    // should execute without throwing an exception
     roll.setDiceKept(getDiceVals(TEST_ROLL_ARRAY), TEST_ROLL_LIST_SCORE, scoreCalc);
-    verify(scoreCalc).calculateRollScore(anyList());
+    verifyScoreCalcMock();
   }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
@@ -148,23 +162,33 @@ public class RollTest {
 
   @Test
   public void testCanRollAgainWithEmptyDiceKept() {
+    simulateScoreCalcMock(MIN_SCORE);
     Roll roll = new Roll(DEFAULT_NUM_DICE, TEST_ROLL_LIST);
-    roll.setDiceKept(new LinkedList<DieValue>(), 0, scoreCalc);
+    roll.setDiceKept(new LinkedList<DieValue>(), MIN_SCORE, scoreCalc);
+
     assertFalse(roll.canRollAgain(scoreCalc));
+    verifyScoreCalcMock();
   }
 
   @Test
-  public void testCanRollAgainWithDiceKeptThatDontScore() {
-    Roll roll = new Roll(DEFAULT_NUM_DICE, getDiceVals(new int[]{2, 3, 4, 6, 6, 2}));
-    roll.setDiceKept(new LinkedList<DieValue>(), 0, scoreCalc);
+  public void testCanRollAgainWithDiceKeptThatDontGainPoints() {
+    simulateScoreCalcMock(MIN_SCORE);
+    Roll roll = new Roll(DEFAULT_NUM_DICE, getDiceVals(TEST_ROLL_ARRAY_NO_POINTS));
+    roll.setDiceKept(new LinkedList<DieValue>(), MIN_SCORE, scoreCalc);
+
     assertFalse(roll.canRollAgain(scoreCalc));
+    verifyScoreCalcMock();
   }
 
   @Test
-  public void testCanRollAgainWithDiceKeptThatDoScore() {
+  public void testCanRollAgainWithDiceKeptThatDoGainPoints() {
+    simulateScoreCalcMock(TEST_ROLL_LIST_SCORE);
     Roll roll = new Roll(DEFAULT_NUM_DICE, TEST_ROLL_LIST);
-    roll.setDiceKept(getDiceVals(TEST_ROLL_ARRAY[0], TEST_ROLL_ARRAY[4]), 150, scoreCalc);
+    roll.setDiceKept(getDiceVals(TEST_ROLL_ARRAY[0], TEST_ROLL_ARRAY[4]),
+      TEST_ROLL_LIST_SCORE, scoreCalc);
+
     assertTrue(roll.canRollAgain(scoreCalc));
+    verifyScoreCalcMock();
   }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
@@ -173,13 +197,18 @@ public class RollTest {
   }
 
   @Test
-  public void testRollGainsWithDiceValsThatGainPoints() {
-    assertTrue(new Roll(DEFAULT_NUM_DICE, TEST_ROLL_LIST).rollGainsNoPoints(scoreCalc));
+  public void testRollGainsNoPointsWithDiceValsThatGainPoints() {
+    simulateScoreCalcMock(TEST_ROLL_LIST_SCORE);
+    assertFalse(new Roll(DEFAULT_NUM_DICE, TEST_ROLL_LIST).rollGainsNoPoints(scoreCalc));
+    verifyScoreCalcMock();
   }
 
   @Test
-  public void testRollGainsWithDiceValsThatDontGainPoints() {
-    assertFalse(new Roll(DEFAULT_NUM_DICE, getDiceVals(2,3,4,6,4,3)).rollGainsNoPoints(scoreCalc));
+  public void testRollGainsNoPointsWithDiceValsThatDontGainPoints() {
+    simulateScoreCalcMock(MIN_SCORE);
+    assertTrue(new Roll(DEFAULT_NUM_DICE,
+      getDiceVals(TEST_ROLL_ARRAY_NO_POINTS)).rollGainsNoPoints(scoreCalc));
+    verifyScoreCalcMock();
   }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
@@ -189,16 +218,22 @@ public class RollTest {
 
   @Test
   public void testKeptDiceGainNoPointsWithDiceKeptThatGainPoints() {
+    simulateScoreCalcMock(TEST_ROLL_LIST_SCORE);
     Roll roll = new Roll(DEFAULT_NUM_DICE, TEST_ROLL_LIST);
     roll.setDiceKept(TEST_ROLL_LIST, TEST_ROLL_LIST_SCORE, scoreCalc);
+
     assertFalse(roll.keptDiceGainNoPoints(scoreCalc));
+    verifyScoreCalcMock();
   }
 
   @Test
   public void testKeptDiceGainNoPointsWithDiceKeptThatDontGainPoints() {
-    Roll roll = new Roll(DEFAULT_NUM_DICE, getDiceVals(2,3,4,6,4,3));
-    roll.setDiceKept(new LinkedList<DieValue>(), TEST_ROLL_LIST_SCORE, scoreCalc);
-    assertFalse(roll.keptDiceGainNoPoints(scoreCalc));
+    simulateScoreCalcMock(MIN_SCORE);
+    Roll roll = new Roll(DEFAULT_NUM_DICE, getDiceVals(TEST_ROLL_ARRAY_NO_POINTS));
+    roll.setDiceKept(new LinkedList<DieValue>(), MIN_SCORE, scoreCalc);
+
+    assertTrue(roll.keptDiceGainNoPoints(scoreCalc));
+    verifyScoreCalcMock();
   }
 
   private List<DieValue> getDiceVals(int ... diceVals) {
@@ -212,6 +247,14 @@ public class RollTest {
     }
 
     return diceValsList;
+  }
+
+  private void simulateScoreCalcMock(int expectedPoints) {
+    when(scoreCalc.calculateRollScore(anyListOf(DieValue.class))).thenReturn(expectedPoints);
+  }
+
+  private void verifyScoreCalcMock() {
+    verify(scoreCalc, atLeastOnce()).calculateRollScore(anyListOf(DieValue.class));
   }
 
 }
