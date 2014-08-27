@@ -9,29 +9,50 @@ import java.util.List;
 public class PlayerManager {
 
     List<Player> players;
-    Player currentPlayer;
+    int currentPlayerIndex;
     HashMap<Player, Integer> playerScores;
 
     public PlayerManager() {
         players = new LinkedList<Player>();
         playerScores = new HashMap<Player, Integer>();
+
+      currentPlayerIndex = -1;
     }
 
-    public Player getNextPlayer() {
+    public void startGame() {
+      currentPlayerIndex = 0;
+    }
+
+    public Player getCurrentPlayer() {
         if(players == null || players.isEmpty()) {
             throw new IllegalStateException("there must be at least one player");
         }
 
-        return currentPlayer;
+        return players.get(currentPlayerIndex);
     }
+
+  public boolean gameHasStarted() {
+    return currentPlayerIndex >= 0;
+  }
+
+  public Player getNextPlayer() {
+    if(!gameHasStarted()) {
+      throw new IllegalStateException("Game hasnt started");
+    }
+
+    if(currentPlayerIndex == players.size() - 1) {
+      currentPlayerIndex = 0;
+    }
+    else {
+      currentPlayerIndex++;
+    }
+
+    return getCurrentPlayer();
+  }
 
     public void addPlayer(Player player) {
         if(player == null) {
             throw new IllegalArgumentException("Player cannot be null");
-        }
-
-        if(currentPlayer == null && players.isEmpty()) {
-            currentPlayer = player;
         }
 
         players.add(player);
@@ -43,9 +64,10 @@ public class PlayerManager {
             throw new IllegalArgumentException("score cant be less than zero");
         }
 
-        playerScores.put(currentPlayer, playerScores.get(currentPlayer) + score);
 
-        if(playerScores.get(currentPlayer) >= PropertiesManager.getPointsReqForWin()) {
+        playerScores.put(getCurrentPlayer(), playerScores.get(getCurrentPlayer()) + score);
+
+        if(playerScores.get(getCurrentPlayer()) >= PropertiesManager.getPointsReqForWin()) {
             // put logic here......
         }
     }
