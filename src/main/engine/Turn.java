@@ -42,7 +42,7 @@ public class Turn {
   }
 
   public boolean canRollAgain(ScoreCalculator scoreCalc) {
-      return !rolls.isEmpty() && rolls.get(rolls.size() - 1).canRollAgain(scoreCalc);
+      return !rolls.isEmpty() && getLastRoll().canRollAgain(scoreCalc);
   }
 
   public final List<Roll> getRolls() {
