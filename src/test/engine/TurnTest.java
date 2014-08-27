@@ -155,6 +155,20 @@ public class TurnTest {
   }
 
   @Test
+  public void testCanGetLastRollWithNoRolls() {
+    Turn turn = getTestTurn();
+    assertFalse(turn.canGetLastRoll());
+  }
+
+  @Test
+  public void testCanGetLastRollWithPreviousRollsExisting() {
+    Turn turn = getTestTurn();
+    turn.addRoll(testRollOne);
+
+    assertTrue(turn.canGetLastRoll());
+  }
+
+  @Test
   public void testGetLastRollWithEmptyRollsList() {
     assertNull(getTestTurn().getLastRoll());
   }

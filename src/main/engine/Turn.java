@@ -5,23 +5,24 @@ import java.util.List;
 
 public class Turn {
 
-    final private List<Roll> rolls;
-    final private Player player;
+  final private List<Roll> rolls;
+  final private Player player;
 
   public Turn(Player playerWhoTakesTurn) {
-      if(playerWhoTakesTurn == null) {
-          throw new IllegalArgumentException("player for turn cant be null");
-      }
+    if (playerWhoTakesTurn == null) {
+      throw new IllegalArgumentException("player for turn cant be null");
+    }
 
     rolls = new LinkedList<Roll>();
     player = playerWhoTakesTurn;
   }
 
   public void addRoll(Roll newRoll) {
-    if(newRoll == null) {
+    if (newRoll == null) {
       throw new IllegalArgumentException("Roll cant be null");
     }
-        rolls.add(newRoll);
+
+    rolls.add(newRoll);
   }
 
   public final Player getTurnPlayer() {
@@ -34,7 +35,7 @@ public class Turn {
 
   public int getTotalScoreForTurn() {
     int total = 0;
-    for(Roll current : rolls) {
+    for (Roll current : rolls) {
       total += current.getScoreForRoll();
     }
 
@@ -42,19 +43,27 @@ public class Turn {
   }
 
   public boolean canRollAgain(ScoreCalculator scoreCalc) {
-      return !rolls.isEmpty() && getLastRoll().canRollAgain(scoreCalc);
+    return canGetLastRoll() && getLastRoll().canRollAgain(scoreCalc);
   }
 
   public final List<Roll> getRolls() {
     return rolls;
   }
 
+  public boolean canGetLastRoll() {
+    return !rolls.isEmpty();
+  }
+
   public final Roll getLastRoll() {
-    if(rolls.isEmpty()) {
+    if (!canGetLastRoll()) {
       return null;
     }
 
     return rolls.get(rolls.size() - 1);
+  }
+
+  public void setDiceKept(List<DieValue> keptDice, int score, ScoreCalculator scoreCalc) {
+    getLastRoll().setDiceKept(keptDice, score, scoreCalc);
   }
 
 }
