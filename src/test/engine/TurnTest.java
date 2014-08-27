@@ -16,6 +16,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 public class TurnTest {
@@ -151,6 +152,29 @@ public class TurnTest {
 
     assertFalse(turn.canRollAgain(testScoreCalc));
     verify(testRollTwo).canRollAgain(any(ScoreCalculator.class));
+  }
+
+  @Test
+  public void testGetLastRollWithEmptyRollsList() {
+    assertNull(getTestTurn().getLastRoll());
+  }
+
+  @Test
+  public void testGetLastRollWithOneRollInRollsList() {
+    Turn turn = getTestTurn();
+    turn.addRoll(testRollOne);
+
+    assertEquals(testRollOne, turn.getLastRoll());
+  }
+
+  @Test
+  public void testGetLastRollWithMultipleRollsInRollList() {
+    Turn turn = getTestTurn();
+    turn.addRoll(testRollOne);
+    turn.addRoll(testRollTwo);
+    turn.addRoll(testRollOne);
+
+    assertEquals(testRollOne, turn.getLastRoll());
   }
 
   private Turn getTestTurn() {

@@ -49,4 +49,12 @@ public class Turn {
     return rolls;
   }
 
+  public final Roll getLastRoll() {
+    if(rolls.isEmpty()) {
+      return null;
+    }
+
+    return rolls.get(rolls.size() - 1);
+  }
+
 }
