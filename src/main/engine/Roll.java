@@ -43,8 +43,8 @@ public class Roll {
       }
     }
 
-    if(pointsGained < 0) {
-      throw new IllegalArgumentException("Points gained cant be less than zero");
+    if(pointsGained < PropertiesManager.getMinScore()) {
+      throw new IllegalArgumentException("Points gained cant be less than minimum score");
     }
 
     if(scoreCalc == null) {
@@ -65,14 +65,6 @@ public class Roll {
     if(diceKept == null) {
         return true;
     }
-
-    // todo: Check if this portion is necessary
-    /*List<DieValue> leftoverDice = new LinkedList<DieValue>();
-    for(DieValue current : getDiceVals()) {
-      if(!diceKept.contains(current)) {
-          leftoverDice.add(current);
-      }
-    }*/
 
     return !diceKept.isEmpty() && !rollGainsNoPoints(scoreCalc) && !keptDiceGainNoPoints(scoreCalc);
   }
