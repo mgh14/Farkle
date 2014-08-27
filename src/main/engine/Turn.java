@@ -54,7 +54,7 @@ public class Turn {
     return !rolls.isEmpty();
   }
 
-  public final Roll getLastRoll() {
+  public Roll getLastRoll() {
     if (!canGetLastRoll()) {
       return null;
     }
