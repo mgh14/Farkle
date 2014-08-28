@@ -107,7 +107,59 @@ public class RollManagerTest {
     manager.reset();
   }
 
+  @Test(expectedExceptions = IllegalStateException.class)
+  public void testGetNextRollWhenTurnIsNotInPlay() {
+    manager.getNextRoll();
+  }
 
+  @Test(expectedExceptions = IllegalStateException.class)
+  public void testGetNextRollWhenCantRollAgain() {
+    manager.beginTurn(mockPlayer);
+
+    Turn mockTurn = mock(Turn.class);
+    when(mockTurn.canRollAgain(any(ScoreCalculator.class))).thenReturn(false);
+
+    manager.getNextRoll();
+  }
+
+  @Test
+  public void testGetLegitimateNextRoll() {
+    Turn mockTurn = mock(Turn.class);
+    when(mockTurn.canRollAgain(any(ScoreCalculator.class))).thenReturn(true);
+    manager.setCurrentTurn(mockTurn);
+
+    int[] diceValIndicesToKeep = {0, 1, 2};
+    //NUM_DICE_START - diceValIndicesToKeep.length
+    Roll mockRoll = mock(Roll.class);
+    when(mockTurn.getLastRoll()).thenReturn(mockRoll);
+    when(mockRoll.getDiceKept()).thenReturn(getTestDieValueList(mock(DieValue.class), 3));
+
+    System.out.println(manager.getNextRoll().equals(mockRoll));
+    System.out.println(manager.getNextRoll().getDiceKept());
+    assertEquals(manager.getNextRoll().getDiceVals().size(), 3);
+    verify(mockTurn).canRollAgain(any(ScoreCalculator.class));
+    verify(mockTurn).getLastRoll();
+    verify(mockTurn).addRoll(mockRoll);
+    verify(mockRoll).getDiceKept();
+
+  }
+
+/*  public Roll getNextRoll() {
+    if (!turnInPlay()) {
+      throw new IllegalStateException("Cant get next roll until turn is started");
+    }
+
+    if (!canRollAgain()) {
+      throw new IllegalStateException("no more rolls allowed");
+    }
+
+    int size = currentTurn.getLastRoll().getDiceVals().size();
+    Roll nextRoll = getRoll(PropertiesManager.getNumDice() - size);
+
+    currentTurn.addRoll(nextRoll);
+
+    return nextRoll;
+  }*/
 
 
   @Test(expectedExceptions = IllegalArgumentException.class)
