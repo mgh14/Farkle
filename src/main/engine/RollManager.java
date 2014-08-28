@@ -106,6 +106,31 @@ public class RollManager {
     return this;
   }
 
+/*  public void addScore(int score) {
+    if (score < PropertiesManager.getMinScore()) {
+      throw new IllegalArgumentException("score cant be less than minimum score");
+    }
+    if(gameIsFinished()) {
+      throw new IllegalStateException("Cant add score when game is finished");
+    }
+
+    playerScores.put(getCurrentPlayer(), playerScores.get(getCurrentPlayer()) + score);
+  }
+
+  public boolean someoneHasReachedWinningScore() {
+    for (Player player : playerScores.keySet()) {
+      if (scoreQualifiesForWin(playerScores.get(player))) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private boolean scoreQualifiesForWin(int score) {
+    return score >= PropertiesManager.getPointsReqForWin();
+  }*/
+
   private void initializeRollManager(DieValueGenerator dieValueGenerator, ScoreCalculator scoreCalculator) {
     turns = new LinkedList<Turn>();
     setCurrentTurn(null);
