@@ -1,8 +1,5 @@
 package main.engine;
 
-import main.engine.properties.PropertiesManager;
-
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,19 +7,19 @@ public class PlayerManager {
 
   private List<Player> players;
   private int currentPlayerIndex;
-  private HashMap<Player, Integer> playerScores;
+  private boolean someoneHasReachedWinningScore;
 
   private final int STARTING_PLAYER_INDEX = -1;
 
   public PlayerManager() {
     players = new LinkedList<Player>();
-    playerScores = new HashMap<Player, Integer>();
-
     currentPlayerIndex = STARTING_PLAYER_INDEX;
+
+    setSomeoneHasReachedWinningScore(false);
   }
 
   public void startGame() {
-    currentPlayerIndex = 0;
+    setCurrentPlayerIndexToFirstPlayer();
   }
 
   public Player getCurrentPlayer() {
@@ -33,22 +30,19 @@ public class PlayerManager {
     return players.get(currentPlayerIndex);
   }
 
-  private boolean scoreQualifiesForWin(int score) {
-    return score >= PropertiesManager.getPointsReqForWin();
-  }
-
   public boolean gameHasStarted() {
     return currentPlayerIndex > STARTING_PLAYER_INDEX;
   }
 
-  public boolean someoneHasReachedWinningScore() {
-    for (Player player : playerScores.keySet()) {
-      if (scoreQualifiesForWin(playerScores.get(player))) {
-        return true;
-      }
+  public void addPlayer(Player player) {
+    if(gameHasStarted()) {
+      throw new IllegalStateException("game has already started");
+    }
+    if (player == null) {
+      throw new IllegalArgumentException("Player cannot be null");
     }
 
-    return false;
+    players.add(player);
   }
 
   public Player getNextPlayer() {
@@ -56,13 +50,12 @@ public class PlayerManager {
       throw new IllegalStateException("Game hasnt started");
     }
 
-    if (currentPlayerIndex == players.size() - 1) {
-      if (someoneHasReachedWinningScore()) {
+    int lastIndex = players.size() - 1;
+    if (currentPlayerIndex == lastIndex && someoneHasReachedWinningScore()) {
         return null;
-      }
-      else {
-        currentPlayerIndex = STARTING_PLAYER_INDEX + 1;
-      }
+    }
+    else if(currentPlayerIndex == lastIndex) {
+        setCurrentPlayerIndexToFirstPlayer();
     }
     else {
       currentPlayerIndex++;
@@ -71,20 +64,28 @@ public class PlayerManager {
     return getCurrentPlayer();
   }
 
-  public void addPlayer(Player player) {
-    if (player == null) {
-      throw new IllegalArgumentException("Player cannot be null");
-    }
-
-    players.add(player);
-    playerScores.put(player, 0);
+  public void setSomeoneHasReachedWinningScore(boolean value) {
+    someoneHasReachedWinningScore = value;
   }
 
-  public void addScore(int score) {
-    if (score < PropertiesManager.getMinScore()) {
-      throw new IllegalArgumentException("score cant be less than minimum score");
-    }
-
-    playerScores.put(getCurrentPlayer(), playerScores.get(getCurrentPlayer()) + score);
+  public boolean someoneHasReachedWinningScore() {
+    return someoneHasReachedWinningScore;
   }
+
+  public boolean gameIsFinished() {
+    return gameHasStarted() && someoneHasReachedWinningScore() && isCurrentPlayerIndexOnFirstPlayer();
+  }
+
+  private int getFirstPlayerIndex() {
+    return STARTING_PLAYER_INDEX + 1;
+  }
+
+  private void setCurrentPlayerIndexToFirstPlayer() {
+    currentPlayerIndex = getFirstPlayerIndex();
+  }
+
+  private boolean isCurrentPlayerIndexOnFirstPlayer() {
+    return currentPlayerIndex == getFirstPlayerIndex();
+  }
+
 }
