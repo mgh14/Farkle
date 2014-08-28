@@ -7,14 +7,12 @@ import java.util.List;
 
 public class RollManager {
 
-  private List<Turn> turns;
-  private Turn currentTurn;
-
+  private TurnManager turnManager;
   private DieValueGenerator generator;
   private ScoreCalculator scoreCalc;
 
   public RollManager(DieValueGenerator dieValueGenerator, ScoreCalculator scoreCalculator) {
-    initializeRollManager(dieValueGenerator, scoreCalculator);
+    initializeRollManager(new TurnManager(), dieValueGenerator, scoreCalculator);
   }
 
   public RollManager() {
@@ -22,7 +20,7 @@ public class RollManager {
   }
 
   public boolean turnInPlay() {
-    return currentTurn != null;
+    return turnManager.turnInPlay();
   }
 
   public Roll beginTurn(Player player) {
@@ -30,16 +28,16 @@ public class RollManager {
       throw new IllegalArgumentException("Player cant be null");
     }
 
-    setCurrentTurn(new Turn(player));
+    setCurrentTurn(turnManager.getNewTurn(player));
 
     final Roll firstRoll = getRoll(PropertiesManager.getNumDice());
-    currentTurn.addRoll(firstRoll);
+    turnManager.getCurrentTurn().addRoll(firstRoll);
 
     return firstRoll;
   }
 
   public boolean canRollAgain() {
-    return turnInPlay() && currentTurn.canRollAgain(scoreCalc);
+    return turnInPlay() && getCurrentTurn().canRollAgain(scoreCalc);
   }
 
   public Roll getNextRoll() {
@@ -51,6 +49,7 @@ public class RollManager {
       throw new IllegalStateException("no more rolls allowed");
     }
 
+    Turn currentTurn = getCurrentTurn();
     int size = currentTurn.getLastRoll().getDiceVals().size();
     Roll nextRoll = getRoll(PropertiesManager.getNumDice() - size);
 
@@ -64,31 +63,24 @@ public class RollManager {
       throw new IllegalArgumentException("Roll cant be null");
     }
 
-    currentTurn.addRoll(playerRoll);
+    getCurrentTurn().addRoll(playerRoll);
   }
 
   public int keepDieValues(int... dieValIndices) {
-    if (currentTurn == null) {
-      throw new IllegalStateException("No turn has been initialized; cant keep dice");
+    if (turnInPlay()) {
+      throw new IllegalStateException("No turn is in play; cant keep dice");
     }
 
-    List<DieValue> diceRolled = currentTurn.getLastRoll().getDiceVals();
+    List<DieValue> diceRolled = getCurrentTurn().getLastRoll().getDiceVals();
     List<DieValue> diceToKeep = new LinkedList<DieValue>();
     for (int dieVal : dieValIndices) {
       diceToKeep.add(diceRolled.get(dieVal));
     }
 
+    Turn currentTurn = getCurrentTurn();
     currentTurn.setDiceKept(diceToKeep, scoreCalc.calculateRollScore(diceToKeep), scoreCalc);
 
     return currentTurn.getLastRoll().getScoreForRoll();
-  }
-
-  public void undoLastTurn() {
-    if (turnInPlay()) {
-      throw new IllegalStateException("Cant undo turn while turn is being taken");
-    }
-
-    turns.remove(turns.size() - 1);
   }
 
   public Roll getLastRoll() {
@@ -96,12 +88,12 @@ public class RollManager {
       throw new IllegalStateException("no turn in play");
     }
 
-    return currentTurn.getLastRoll();
+    return getCurrentTurn().getLastRoll();
   }
 
   // used for testing
   public RollManager reset() {
-    initializeRollManager(new DieValueGenerator(), new ScoreCalculator());
+    initializeRollManager(new TurnManager(), new DieValueGenerator(), new ScoreCalculator());
 
     return this;
   }
@@ -131,8 +123,8 @@ public class RollManager {
     return score >= PropertiesManager.getPointsReqForWin();
   }*/
 
-  private void initializeRollManager(DieValueGenerator dieValueGenerator, ScoreCalculator scoreCalculator) {
-    turns = new LinkedList<Turn>();
+  private void initializeRollManager(TurnManager newTurnManager, DieValueGenerator dieValueGenerator, ScoreCalculator scoreCalculator) {
+    turnManager = newTurnManager;
     setCurrentTurn(null);
 
     generator = dieValueGenerator;
@@ -144,9 +136,52 @@ public class RollManager {
       PropertiesManager.getMaxDieValue(), numDice));
   }
 
+  private Turn getCurrentTurn() {
+    return turnManager.getCurrentTurn();
+  }
+
   // used only for testing outside this class (should be an internal method)
   public void setCurrentTurn(Turn turn) {
-    currentTurn = turn;
+    turnManager.setCurrentTurn(turn);
+  }
+
+  private class TurnManager {
+
+    private List<Turn> turns;
+    private Turn currentTurn;
+
+    TurnManager() {
+      turns = new LinkedList<Turn>();
+      setCurrentTurn(null);
+    }
+
+    boolean turnInPlay() {
+      return currentTurn != null;
+    }
+
+    Turn getCurrentTurn() {
+      return currentTurn;
+    }
+
+    void setCurrentTurn(Turn turn) {
+      currentTurn = turn;
+    }
+
+    Turn getNewTurn(Player player) {
+      if(turnInPlay()) {
+        throw new IllegalStateException("turn already in play; cant get new turn");
+      }
+
+      return new Turn(player);
+    }
+
+    void undoLastTurn() {
+      if (turnInPlay()) {
+        throw new IllegalStateException("Cant undo turn while turn is being taken");
+      }
+
+      turns.remove(turns.size() - 1);
+    }
   }
 
 }
