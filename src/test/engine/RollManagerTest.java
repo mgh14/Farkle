@@ -24,6 +24,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 public class RollManagerTest {
@@ -130,7 +131,51 @@ public class RollManagerTest {
   }
 
 
+  @Test
+  public void testUndoLastTurnWhileTurnIsInPlay() {
+    //manager.
+    //manager.setCurrentTurn(mock(Turn.class));
+  }
 
+  @Test
+  public void test() {
+
+  }
+
+/*  public void undoLastTurn() {
+    if (turnInPlay()) {
+      throw new IllegalStateException("Cant undo turn while turn is being taken");
+    }
+
+    turns.remove(turns.size() - 1);
+  }*/
+
+  @Test(expectedExceptions = IllegalStateException.class)
+  public void testGetLastRollWithNoTurnInPlay() {
+    manager.getLastRoll();
+  }
+
+  @Test
+  public void testGetLastRollWithTurnInPlayAndLastRollNull() {
+    Turn mockTurn = mock(Turn.class);
+    when(mockTurn.getLastRoll()).thenReturn(null);
+    manager.setCurrentTurn(mockTurn);
+
+    assertNull(manager.getLastRoll());
+    verify(mockTurn).getLastRoll();
+  }
+
+  @Test
+  public void testGetLastRollWithTurnInPlayAndLastRollNotNull() {
+    Turn mockTurn = mock(Turn.class);
+    Roll mockRoll = mock(Roll.class);
+
+    when(mockTurn.getLastRoll()).thenReturn(mockRoll);
+    manager.setCurrentTurn(mockTurn);
+
+    assertEquals(manager.getLastRoll(), mockRoll);
+    verify(mockTurn).getLastRoll();
+  }
 
   private List<DieValue> getTestDieValueList(DieValue dieValue, int numToAdd) {
     List<DieValue> dieValues = new LinkedList<DieValue>();
