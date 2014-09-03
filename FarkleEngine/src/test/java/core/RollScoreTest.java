@@ -1,9 +1,8 @@
+package core;
+
 import java.util.LinkedList;
 import java.util.List;
 
-import main.engine.DieValue;
-import main.engine.RollScore;
-import main.engine.ScoreCalculator;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;
@@ -39,7 +38,7 @@ public class RollScoreTest {
   @Test (expectedExceptions = IllegalArgumentException.class)
   public void testCreateRollScoreWithNonmatchingScores() {
     // this List would earn a score NUM_POINTS_FOR_TWO_ONES,
-    // but we will pass in zero to the RollScore constructor
+    // but we will pass in zero to the core.RollScore constructor
     List<DieValue> diceKept = getTestDiceKeptList(new int[]{1, 1, 2});
     when(scoreCalc.calculateRollScore(anyList())).thenReturn(NUM_POINTS_FOR_TWO_ONES);
 

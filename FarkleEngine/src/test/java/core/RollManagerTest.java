@@ -1,13 +1,15 @@
+package core;
+
 import java.util.LinkedList;
 import java.util.List;
 
-import main.engine.DieValue;
-import main.engine.DieValueGenerator;
-import main.engine.Player;
-import main.engine.Roll;
-import main.engine.RollManager;
-import main.engine.ScoreCalculator;
-import main.engine.Turn;
+import core.DieValue;
+import core.DieValueGenerator;
+import core.Player;
+import core.Roll;
+import core.RollManager;
+import core.ScoreCalculator;
+import core.Turn;
 import properties.PropertiesManager;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -142,7 +144,7 @@ public class RollManagerTest {
 
   }
 
-/*  public Roll getNextRoll() {
+/*  public core.Roll getNextRoll() {
     if (!turnInPlay()) {
       throw new IllegalStateException("Cant get next roll until turn is started");
     }
@@ -152,7 +154,7 @@ public class RollManagerTest {
     }
 
     int size = currentTurn.getLastRoll().getDiceVals().size();
-    Roll nextRoll = getRoll(PropertiesManager.getNumDice() - size);
+    core.Roll nextRoll = getRoll(PropertiesManager.getNumDice() - size);
 
     currentTurn.addRoll(nextRoll);
 
@@ -184,7 +186,7 @@ public class RollManagerTest {
   @Test
   public void testUndoLastTurnWhileTurnIsInPlay() {
     //manager.
-    //manager.setCurrentTurn(mock(Turn.class));
+    //manager.setCurrentTurn(mock(core.Turn.class));
   }
 
   @Test

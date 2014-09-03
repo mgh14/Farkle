@@ -1,3 +1,5 @@
+package core;
+
 import properties.PropertiesManager;
 
 import java.util.HashMap;

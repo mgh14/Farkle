@@ -1,3 +1,5 @@
+package core;
+
 import properties.PropertiesManager;
 
 public class DieValue {

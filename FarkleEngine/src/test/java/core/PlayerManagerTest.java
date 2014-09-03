@@ -1,5 +1,5 @@
-import main.engine.Player;
-import main.engine.PlayerManager;
+package core;
+
 import org.testng.annotations.Test;
 
 import static org.mockito.Mockito.mock;
@@ -179,10 +179,6 @@ public class PlayerManagerTest {
     manager.finishLastTurnAndEndGame();
     assertTrue(manager.gameIsFinished());
   }
-
-/*  public boolean gameIsFinished() {
-    return someoneHasReachedWinningScore() && isCurrentPlayerIndexOnFirstPlayer();
-  }*/
 
   private PlayerManager getNewPlayerManager() {
     PlayerManager manager = new PlayerManager();

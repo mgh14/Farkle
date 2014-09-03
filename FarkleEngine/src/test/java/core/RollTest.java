@@ -1,6 +1,5 @@
-import main.engine.DieValue;
-import main.engine.Roll;
-import main.engine.ScoreCalculator;
+package core;
+
 import properties.PropertiesManager;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;

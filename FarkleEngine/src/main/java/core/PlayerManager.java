@@ -1,3 +1,5 @@
+package core;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class PlayerManager {
       throw new IllegalStateException("game has already started");
     }
     if (player == null) {
-      throw new IllegalArgumentException("Player cannot be null");
+      throw new IllegalArgumentException("core.Player cannot be null");
     }
 
     players.add(player);

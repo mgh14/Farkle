@@ -1,3 +1,5 @@
+package core;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,7 +19,7 @@ public class Turn {
 
   public void addRoll(Roll newRoll) {
     if (newRoll == null) {
-      throw new IllegalArgumentException("Roll cant be null");
+      throw new IllegalArgumentException("core.Roll cant be null");
     }
 
     rolls.add(newRoll);

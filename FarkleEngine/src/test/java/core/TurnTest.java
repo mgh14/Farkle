@@ -1,7 +1,5 @@
-import main.engine.Player;
-import main.engine.Roll;
-import main.engine.ScoreCalculator;
-import main.engine.Turn;
+package core;
+
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;

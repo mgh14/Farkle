@@ -1,8 +1,8 @@
+package core;
+
 import java.util.List;
 import java.util.Random;
 
-import main.engine.DieValue;
-import main.engine.DieValueGenerator;
 import properties.PropertiesManager;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

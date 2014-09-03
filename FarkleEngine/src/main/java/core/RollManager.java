@@ -1,3 +1,5 @@
+package core;
+
 import properties.PropertiesManager;
 
 import java.util.LinkedList;
@@ -23,7 +25,7 @@ public class RollManager {
 
   public Roll beginTurn(Player player) {
     if (player == null) {
-      throw new IllegalArgumentException("Player cant be null");
+      throw new IllegalArgumentException("core.Player cant be null");
     }
 
     setCurrentTurn(turnManager.getNewTurn(player));
@@ -58,7 +60,7 @@ public class RollManager {
 
   public void addRoll(Roll playerRoll) {
     if (playerRoll == null) {
-      throw new IllegalArgumentException("Roll cant be null");
+      throw new IllegalArgumentException("core.Roll cant be null");
     }
 
     getCurrentTurn().addRoll(playerRoll);
@@ -108,7 +110,7 @@ public class RollManager {
   }
 
   public boolean someoneHasReachedWinningScore() {
-    for (Player player : playerScores.keySet()) {
+    for (core.Player player : playerScores.keySet()) {
       if (scoreQualifiesForWin(playerScores.get(player))) {
         return true;
       }

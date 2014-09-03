@@ -1,3 +1,5 @@
+package core;
+
 import properties.PropertiesManager;
 
 import java.util.*;
@@ -69,7 +71,7 @@ public class Roll {
 
   public boolean rollGainsNoPoints(ScoreCalculator scoreCalc) {
     if(scoreCalc == null) {
-      throw new IllegalArgumentException("ScoreCalculator cant be null");
+      throw new IllegalArgumentException("core.ScoreCalculator cant be null");
     }
 
     return scoreCalc.calculateRollScore(getDiceVals()) == 0;
@@ -77,7 +79,7 @@ public class Roll {
 
   public boolean keptDiceGainNoPoints(ScoreCalculator scoreCalc) {
     if(scoreCalc == null) {
-      throw new IllegalArgumentException("ScoreCalculator cant be null");
+      throw new IllegalArgumentException("core.ScoreCalculator cant be null");
     }
 
     return scoreCalc.calculateRollScore(getDiceKept()) == 0;

@@ -1,3 +1,5 @@
+package core;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,7 +13,7 @@ public class RollScore {
       throw new IllegalArgumentException("Dice kept cant be null");
     }
     if(scoreCalc == null) {
-      throw new IllegalArgumentException("RollScore requires a ScoreCalculator");
+      throw new IllegalArgumentException("core.RollScore requires a core.ScoreCalculator");
     }
 
     final int scoreCalcScore = scoreCalc.calculateRollScore(diceKept);
