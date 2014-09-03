@@ -1,9 +1,7 @@
-package test.engine;
-
 import java.util.LinkedList;
 
 import main.engine.DieValue;
-import main.engine.properties.PropertiesManager;
+import properties.PropertiesManager;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

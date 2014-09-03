@@ -1,5 +1,3 @@
-package test.engine;
-
 import main.engine.DieValue;
 import main.engine.Roll;
 import main.engine.ScoreCalculator;

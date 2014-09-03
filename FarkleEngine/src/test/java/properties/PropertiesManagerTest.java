@@ -1,4 +1,4 @@
-package test.engine.properties;
+package properties;
 
 public class PropertiesManagerTest {
 

@@ -1,5 +1,3 @@
-package test.engine;
-
 import main.engine.Player;
 import main.engine.PlayerManager;
 import org.testng.annotations.Test;

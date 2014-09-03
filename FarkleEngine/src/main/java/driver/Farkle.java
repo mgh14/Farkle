@@ -1,9 +1,9 @@
-package main.engine.driver;
+package driver;
 
-import main.engine.Player;
-import main.engine.PlayerManager;
-import main.engine.Roll;
-import main.engine.RollManager;
+import Player;
+import PlayerManager;
+import Roll;
+import RollManager;
 
 public class Farkle {
 

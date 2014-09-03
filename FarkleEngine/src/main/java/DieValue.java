@@ -1,6 +1,4 @@
-package main.engine;
-
-import main.engine.properties.PropertiesManager;
+import properties.PropertiesManager;
 
 public class DieValue {
 	

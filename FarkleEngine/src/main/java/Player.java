@@ -1,5 +1,3 @@
-package main.engine;
-
 public class Player {
 
     private final int playerNum;

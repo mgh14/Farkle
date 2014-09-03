@@ -1,4 +1,4 @@
-package main.engine.properties;
+package properties;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;

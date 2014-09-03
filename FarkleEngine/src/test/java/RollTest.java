@@ -1,9 +1,7 @@
-package test.engine;
-
 import main.engine.DieValue;
 import main.engine.Roll;
 import main.engine.ScoreCalculator;
-import main.engine.properties.PropertiesManager;
+import properties.PropertiesManager;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.annotations.BeforeMethod;

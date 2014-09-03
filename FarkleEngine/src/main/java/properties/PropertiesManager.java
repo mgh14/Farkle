@@ -1,6 +1,6 @@
-package main.engine.properties;
+package properties;
 
-import main.engine.DieValueGenerator;
+import DieValueGenerator;
 
 import java.io.File;
 import java.util.HashMap;

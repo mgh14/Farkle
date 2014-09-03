@@ -1,5 +1,3 @@
-package test.engine;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +8,7 @@ import main.engine.Roll;
 import main.engine.RollManager;
 import main.engine.ScoreCalculator;
 import main.engine.Turn;
-import main.engine.properties.PropertiesManager;
+import properties.PropertiesManager;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;

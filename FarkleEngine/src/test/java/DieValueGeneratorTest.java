@@ -1,11 +1,9 @@
-package test.engine;
-
 import java.util.List;
 import java.util.Random;
 
 import main.engine.DieValue;
 import main.engine.DieValueGenerator;
-import main.engine.properties.PropertiesManager;
+import properties.PropertiesManager;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;

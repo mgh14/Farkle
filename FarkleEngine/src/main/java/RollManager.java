@@ -1,6 +1,4 @@
-package main.engine;
-
-import main.engine.properties.PropertiesManager;
+import properties.PropertiesManager;
 
 import java.util.LinkedList;
 import java.util.List;

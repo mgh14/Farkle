@@ -1,8 +1,5 @@
-package test.engine.properties;
+package properties;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-import main.engine.properties.PropertiesManager;
-import main.engine.properties.XMLHelper;
 import org.testng.annotations.Test;
 
 import javax.xml.stream.XMLInputFactory;
