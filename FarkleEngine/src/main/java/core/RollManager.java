@@ -16,7 +16,7 @@ public class RollManager {
   }
 
   public RollManager() {
-    new RollManager(new DieValueGenerator(), new ScoreCalculator());
+    initializeRollManager(new TurnManager(), new DieValueGenerator(), new ScoreCalculator());
   }
 
   public boolean turnInPlay() {
@@ -50,8 +50,8 @@ public class RollManager {
     }
 
     Turn currentTurn = getCurrentTurn();
-    int size = currentTurn.getLastRoll().getDiceVals().size();
-    Roll nextRoll = getRoll(PropertiesManager.getNumDice() - size);
+    int sizeOfLastRoll = getCurrentTurn().getLastRoll().getDiceKept().size();
+    Roll nextRoll = getRoll(PropertiesManager.getNumDice() - sizeOfLastRoll);
 
     currentTurn.addRoll(nextRoll);
 
