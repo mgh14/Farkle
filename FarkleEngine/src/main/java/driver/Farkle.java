@@ -1,9 +1,9 @@
 package driver;
 
-import Player;
-import PlayerManager;
-import Roll;
-import RollManager;
+import core.Player;
+import core.PlayerManager;
+import core.Roll;
+import core.RollManager;
 
 public class Farkle {
 

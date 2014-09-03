@@ -1,9 +1,9 @@
 package properties;
 
-import DieValueGenerator;
-
 import java.io.File;
 import java.util.HashMap;
+
+import core.DieValueGenerator;
 
 public class PropertiesManager {
 
