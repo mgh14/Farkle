@@ -3,13 +3,6 @@ package core;
 import java.util.LinkedList;
 import java.util.List;
 
-import core.DieValue;
-import core.DieValueGenerator;
-import core.Player;
-import core.Roll;
-import core.RollManager;
-import core.ScoreCalculator;
-import core.Turn;
 import properties.PropertiesManager;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -50,15 +43,14 @@ public class RollManagerTest {
 
   @Test
   public void testTurnInPlayBeforeTurnStarts() {
-    assertFalse(manager.turnInPlay());
+    assertFalse(new RollManager(generator, scoreCalc).turnInPlay());
   }
 
   @Test
   public void testTurnInPlayAfterTurnStarts() {
+    RollManager manager = new RollManager(generator, scoreCalc);
     manager.beginTurn(mockPlayer);
     assertTrue(manager.turnInPlay());
-
-    manager.reset();
   }
 
   @Test(expectedExceptions = IllegalArgumentException.class)
@@ -109,7 +101,7 @@ public class RollManagerTest {
 
   @Test(expectedExceptions = IllegalStateException.class)
   public void testGetNextRollWhenTurnIsNotInPlay() {
-    manager.getNextRoll();
+    new RollManager(generator, scoreCalc).getNextRoll();
   }
 
   @Test(expectedExceptions = IllegalStateException.class)
@@ -124,22 +116,24 @@ public class RollManagerTest {
 
   @Test
   public void testGetLegitimateNextRoll() {
+    RollManager manager = new RollManager(generator, scoreCalc);
     Turn mockTurn = mock(Turn.class);
     when(mockTurn.canRollAgain(any(ScoreCalculator.class))).thenReturn(true);
     manager.setCurrentTurn(mockTurn);
 
     int[] diceValIndicesToKeep = {0, 1, 2};
-    //NUM_DICE_START - diceValIndicesToKeep.length
+    int numDiceToGetInNextRoll = NUM_DICE_START - diceValIndicesToKeep.length;
     Roll mockRoll = mock(Roll.class);
     when(mockTurn.getLastRoll()).thenReturn(mockRoll);
-    when(mockRoll.getDiceKept()).thenReturn(getTestDieValueList(mock(DieValue.class), 3));
+    List<DieValue> testList = getTestDieValueList(mock(DieValue.class), numDiceToGetInNextRoll);
+    when(generator.getDieValues(anyInt(), anyInt(), anyInt())).thenReturn(testList);
+    when(mockRoll.getDiceKept()).thenReturn(testList);
 
-    System.out.println(manager.getNextRoll().equals(mockRoll));
-    System.out.println(manager.getNextRoll().getDiceKept());
-    assertEquals(manager.getNextRoll().getDiceVals().size(), 3);
+    Roll roll = manager.getNextRoll();
+    assertEquals(roll.getDiceVals().size(), numDiceToGetInNextRoll);
     verify(mockTurn).canRollAgain(any(ScoreCalculator.class));
     verify(mockTurn).getLastRoll();
-    verify(mockTurn).addRoll(mockRoll);
+    //verify(mockTurn).addRoll(any(Roll.class));
     verify(mockRoll).getDiceKept();
 
   }
